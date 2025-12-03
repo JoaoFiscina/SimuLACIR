@@ -635,3 +635,59 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+.ligante-login {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.ligante-login label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  color: #374151;
+}
+
+.ligante-login-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+#senha-ligante {
+  flex: 1;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 0.4rem 0.8rem;
+}
+
+#btn-login-ligante {
+  border-radius: 999px;
+  border: 1px solid #16a34a;
+  background: #16a34a;
+  color: #ffffff;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+#btn-login-ligante:hover {
+  background: #15803d;
+}
+
+.ligante-mensagem {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.ligante-conteudo {
+  margin-top: 1rem;
+}
+
+.oculto {
+  display: none;
+}
