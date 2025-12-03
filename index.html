@@ -12,6 +12,7 @@
     <nav class="tabs-nav">
       <button class="tab-link active" data-tab="inicio">Início</button>
       <button class="tab-link" data-tab="casos">Casos</button>
+      <button class="tab-link" data-tab="liga">Área da Liga</button>
       <button class="tab-link" data-tab="upload">Upload</button>
     </nav>
   </header>
@@ -104,6 +105,21 @@
       </section>
     </section>
 
+    <section id="tab-liga" class="tab-section">
+      <h2>Área da Liga – SimuLACIR</h2>
+      <p>
+        Esta área é destinada aos ligantes da Liga Acadêmica de Cirurgia da Bahia (LACIR).
+        Aqui serão disponibilizados casos oficiais, trilhas de estudo e materiais internos.
+      </p>
+      <p>
+        No momento, esta seção é apenas um esqueleto. No futuro, exibiremos aqui todos os casos
+        com <code>nivelAcesso: "liga"</code> ou <code>"seletivo"</code>.
+      </p>
+      <p>
+        Acesse usando a senha da liga para visualizar o conteúdo completo.
+      </p>
+    </section>
+
     <section id="tab-upload" class="tab-section">
       <!-- UPLOAD / VERSÃO FUTURA -->
       <section id="upload" class="section">
@@ -130,12 +146,25 @@
   </footer>
 
   <script>
+    const SENHA_LIGA = "simulacir2025";
+    let ligaDesbloqueada = false;
+
     const tabLinks = document.querySelectorAll(".tab-link");
     const tabSections = document.querySelectorAll(".tab-section");
 
     tabLinks.forEach((link) => {
       link.addEventListener("click", () => {
         const tab = link.getAttribute("data-tab");
+
+        if (tab === "liga" && !ligaDesbloqueada) {
+          const senha = window.prompt("Digite a senha da Liga (SimuLACIR):");
+          if (senha !== SENHA_LIGA) {
+            window.alert("Senha incorreta. Acesso restrito à Liga.");
+            return;
+          }
+          ligaDesbloqueada = true;
+          window.alert("Acesso à Área da Liga liberado.");
+        }
 
         tabLinks.forEach((l) => l.classList.remove("active"));
         tabSections.forEach((sec) => sec.classList.remove("active"));
@@ -152,6 +181,9 @@
       {
         id: "dor-toracica",
         titulo: "Paciente com dor torácica",
+        fonte: "oficial",
+        nivelAcesso: "publico",
+        tags: ["urgência", "dor torácica", "cardiologia", "pronto-atendimento"],
         enunciado:
           "Homem, 58 anos, hipertenso, tabagista, procura o pronto-atendimento por dor torácica em aperto iniciada há cerca de 2 horas, irradiando para o braço esquerdo, associada a sudorese fria e náuseas. Ao exame: PA 150/90 mmHg, FC 100 bpm, saturação 94% em ar ambiente. Não há sinais de instabilidade hemodinâmica importante. Qual a melhor conduta imediata?",
         alternativas: {
