@@ -8,11 +8,11 @@
 </head>
 <body>
   <header class="topbar">
-    <div class="logo">Simulador<span>Clínico</span></div>
+    <div class="logo">Simu<span>LACIR</span></div>
     <nav class="tabs-nav">
       <button class="tab-link active" data-tab="inicio">Início</button>
       <button class="tab-link" data-tab="casos">Casos</button>
-      <button class="tab-link" data-tab="liga">Área do Ligante</button>
+      <button class="tab-link" data-tab="liga">Área da Liga</button>
       <button class="tab-link" data-tab="upload">Upload</button>
     </nav>
   </header>
@@ -106,44 +106,18 @@
     </section>
 
     <section id="tab-liga" class="tab-section">
-      <div class="liga-hero">
-        <div class="liga-hero__badge">Área do ligante</div>
-        <h2>Área do ligante – SimuLACIR</h2>
-        <p>
-          Espaço reservado para membros da Liga Acadêmica de Cirurgia da Bahia (LACIR). Aqui ficarão os casos oficiais,
-          trilhas de estudo e materiais internos.
-        </p>
-        <p>
-          No futuro, esta aba exibirá automaticamente todos os casos com <code>nivelAcesso: "liga"</code> ou
-          <code>"seletivo"</code>. Por enquanto, use a senha para desbloquear a visualização dos casos restritos.
-        </p>
-      </div>
-
-      <div class="liga-access">
-        <div class="liga-access__card">
-          <div class="liga-lockup">
-            <div class="liga-lockup__icon" aria-hidden="true">🔐</div>
-            <div>
-              <p class="liga-lockup__title">Desbloqueie o painel de casos</p>
-              <p class="liga-lockup__subtitle">Digite a senha da liga para liberar o conteúdo reservado.</p>
-            </div>
-          </div>
-          <div class="liga-access__controls">
-            <label for="senha-liga" class="sr-only">Senha da liga</label>
-            <input id="senha-liga" type="password" placeholder="Senha da Liga" autocomplete="current-password" />
-            <button id="btn-senha-liga" class="btn-primary" type="button">Desbloquear</button>
-          </div>
-          <p class="liga-access__hint">Senha temporária para teste: use a mesma combinada com a diretoria.</p>
-        </div>
-
-        <div id="conteudo-liga" class="liga-cases bloqueado" aria-live="polite">
-          <div class="liga-cases__header">
-            <div class="liga-cases__chip">Casos oficiais</div>
-            <p id="status-liga" class="liga-status">🔒 Acesso restrito. Desbloqueie para ver os casos reservados.</p>
-          </div>
-          <ul id="lista-casos-liga" class="liga-cases__list"></ul>
-        </div>
-      </div>
+      <h2>Área da Liga – SimuLACIR</h2>
+      <p>
+        Esta área é destinada aos ligantes da Liga Acadêmica de Cirurgia da Bahia (LACIR).
+        Aqui serão disponibilizados casos oficiais, trilhas de estudo e materiais internos.
+      </p>
+      <p>
+        No momento, esta seção é apenas um esqueleto. No futuro, exibiremos aqui todos os casos
+        com <code>nivelAcesso: "liga"</code> ou <code>"seletivo"</code>.
+      </p>
+      <p>
+        Acesse usando a senha da liga para visualizar o conteúdo completo.
+      </p>
     </section>
 
     <section id="tab-upload" class="tab-section">
@@ -181,6 +155,16 @@
     tabLinks.forEach((link) => {
       link.addEventListener("click", () => {
         const tab = link.getAttribute("data-tab");
+
+        if (tab === "liga" && !ligaDesbloqueada) {
+          const senha = window.prompt("Digite a senha da Liga (SimuLACIR):");
+          if (senha !== SENHA_LIGA) {
+            window.alert("Senha incorreta. Acesso restrito à Liga.");
+            return;
+          }
+          ligaDesbloqueada = true;
+          window.alert("Acesso à Área da Liga liberado.");
+        }
 
         tabLinks.forEach((l) => l.classList.remove("active"));
         tabSections.forEach((sec) => sec.classList.remove("active"));
