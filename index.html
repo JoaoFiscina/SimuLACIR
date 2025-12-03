@@ -74,38 +74,31 @@
     <section id="tab-casos" class="tab-section">
       <!-- CASO DEMONSTRATIVO -->
       <section id="caso-demo" class="section">
-        <div class="section-header">
-          <div>
-            <p class="section-kicker">Caso clínico de demonstração</p>
-            <h2>Paciente com dor torácica</h2>
-            <p>
-              Interaja com um caso simples para testar a experiência do simulador.
-            </p>
-          </div>
-          <button class="btn-secondary">Carregar outro caso (em breve)</button>
-        </div>
+        <h2>Casos clínicos</h2>
+        <p class="section-subtitle">
+          Selecione um caso na lista e responda às alternativas. Por enquanto há apenas um caso de exemplo.
+        </p>
 
-        <div class="case-card">
-          <h3>Carregando caso...</h3>
-          <p id="enunciado"></p>
+        <div class="case-layout">
+          <aside class="case-list">
+            <h4>Casos disponíveis</h4>
+            <ul id="lista-casos"></ul>
+          </aside>
 
-          <ul class="alternativas">
-            <li>
-              <button class="opcao-btn" data-alt="a"></button>
-            </li>
-            <li>
-              <button class="opcao-btn" data-alt="b"></button>
-            </li>
-            <li>
-              <button class="opcao-btn" data-alt="c"></button>
-            </li>
-            <li>
-              <button class="opcao-btn" data-alt="d"></button>
-            </li>
-          </ul>
+          <div class="case-card">
+            <h3 id="titulo-caso">Título do caso</h3>
+            <p id="enunciado"></p>
 
-          <div id="resultado" class="resultado">
-            <p>Escolha uma alternativa para ver o feedback.</p>
+            <ul class="opcoes-lista">
+              <li><button class="opcao-btn" data-alt="a"></button></li>
+              <li><button class="opcao-btn" data-alt="b"></button></li>
+              <li><button class="opcao-btn" data-alt="c"></button></li>
+              <li><button class="opcao-btn" data-alt="d"></button></li>
+            </ul>
+
+            <div id="resultado" class="resultado">
+              <p>Escolha uma alternativa para ver o feedback.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -154,12 +147,13 @@
         }
       });
     });
-
+    // Base de dados dos casos (por enquanto, apenas 1 caso)
     const casos = [
       {
         id: "dor-toracica",
         titulo: "Paciente com dor torácica",
-        enunciado: "Homem, 58 anos, hipertenso, tabagista, procura o pronto-atendimento por dor torácica em aperto iniciada há cerca de 2 horas, irradiando para o braço esquerdo, associada a sudorese fria e náuseas. Ao exame: PA 150/90 mmHg, FC 100 bpm, saturação 94% em ar ambiente. Não há sinais de instabilidade hemodinâmica importante. Qual a melhor conduta imediata?",
+        enunciado:
+          "Homem, 58 anos, hipertenso, tabagista, procura o pronto-atendimento por dor torácica em aperto iniciada há cerca de 2 horas, irradiando para o braço esquerdo, associada a sudorese fria e náuseas. Ao exame: PA 150/90 mmHg, FC 100 bpm, saturação 94% em ar ambiente. Não há sinais de instabilidade hemodinâmica importante. Qual a melhor conduta imediata?",
         alternativas: {
           a: "Prescrever AINE para dor muscular e orientar retorno se piorar.",
           b: "Encaminhar imediatamente para sala de emergência, realizar ECG e iniciar manejo de síndrome coronariana aguda.",
@@ -178,65 +172,95 @@
 
     let indiceCasoAtual = 0;
 
-    function carregarCaso(index) {
-      indiceCasoAtual = index;
+    // Referências aos elementos da interface
+    const listaCasosEl = document.getElementById("lista-casos");
+    const tituloCasoEl = document.getElementById("titulo-caso");
+    const enunciadoEl = document.getElementById("enunciado");
+    const botoesOpcoes = document.querySelectorAll(".opcao-btn");
+    const resultadoDiv = document.getElementById("resultado");
+
+    // Monta a lista de casos a partir do array "casos"
+    if (listaCasosEl) {
+      casos.forEach((caso, indice) => {
+        const li = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.textContent = `Caso ${indice + 1} – ${caso.titulo}`;
+        btn.classList.add("case-list-btn");
+        if (indice === 0) {
+          btn.classList.add("active");
+        }
+        btn.dataset.indice = indice.toString();
+        li.appendChild(btn);
+        listaCasosEl.appendChild(li);
+      });
+    }
+
+    // Função para carregar um caso no card
+    function carregarCaso(indice) {
+      indiceCasoAtual = indice;
       const caso = casos[indiceCasoAtual];
 
-      const tituloEl = document.querySelector(".case-card h3");
-      const enunciadoEl = document.getElementById("enunciado");
-      const botoes = document.querySelectorAll(".opcao-btn");
-      const resultadoDiv = document.getElementById("resultado");
-
-      if (!tituloEl || !enunciadoEl || !resultadoDiv || botoes.length === 0) {
+      if (!tituloCasoEl || !enunciadoEl || !resultadoDiv) {
         console.error("Elementos do caso clínico não encontrados no HTML.");
         return;
       }
 
-      tituloEl.textContent = caso.titulo;
+      tituloCasoEl.textContent = caso.titulo;
       enunciadoEl.textContent = caso.enunciado;
 
-      botoes.forEach((btn) => {
-        const alt = btn.getAttribute("data-alt"); // a, b, c, d
+      botoesOpcoes.forEach((btn) => {
+        const alt = btn.dataset.alt; // "a", "b", "c", "d"
         btn.classList.remove("correta", "errada");
-        btn.textContent = `${alt}) ${caso.alternativas[alt]}`;
+        if (alt && caso.alternativas[alt]) {
+          btn.textContent = `${alt}) ${caso.alternativas[alt]}`;
+        }
       });
 
       resultadoDiv.innerHTML = "<p>Escolha uma alternativa para ver o feedback.</p>";
     }
 
-    const botoes = document.querySelectorAll(".opcao-btn");
-    const resultadoDiv = document.getElementById("resultado");
+    // Eventos de clique na lista de casos
+    if (listaCasosEl) {
+      const botoesLista = listaCasosEl.querySelectorAll(".case-list-btn");
+      botoesLista.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const indice = parseInt(btn.dataset.indice || "0", 10);
 
-    botoes.forEach((btn) => {
+          botoesLista.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          carregarCaso(indice);
+        });
+      });
+    }
+
+    // Eventos de clique nas alternativas
+    botoesOpcoes.forEach((btn) => {
       btn.addEventListener("click", () => {
-        const alt = btn.getAttribute("data-alt");
+        const alt = btn.dataset.alt;
         const caso = casos[indiceCasoAtual];
 
-        const info = {
-          correta: caso.correta === alt,
-          texto: caso.explicacoes[alt]
-        };
+        if (!alt || !caso) return;
 
-        botoes.forEach((b) => b.classList.remove("correta", "errada"));
+        const correta = caso.correta === alt;
 
-        if (info.correta) {
-          btn.classList.add("correta");
-        } else {
-          btn.classList.add("errada");
-        }
+        botoesOpcoes.forEach((b) => b.classList.remove("correta", "errada"));
+        btn.classList.add(correta ? "correta" : "errada");
 
         resultadoDiv.innerHTML = `
           <p><strong>Você escolheu: (${alt})</strong></p>
-          <p class="${info.correta ? "texto-correto" : "texto-errado"}">
-            ${info.correta ? "✅ Resposta correta." : "❌ Resposta incorreta."}
+          <p class="${correta ? "texto-correto" : "texto-errado"}">
+            ${correta ? "✅ Resposta correta." : "❌ Resposta incorreta."}
           </p>
-          <p>${info.texto}</p>
+          <p>${caso.explicacoes[alt]}</p>
         `;
       });
     });
 
-    // carrega o primeiro caso assim que a página abrir
-    carregarCaso(0);
+    // Inicializa com o primeiro caso
+    if (casos.length > 0) {
+      carregarCaso(0);
+    }
   </script>
 </body>
 </html>
