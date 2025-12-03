@@ -12,7 +12,7 @@
     <nav class="tabs-nav">
       <button class="tab-link active" data-tab="inicio">Início</button>
       <button class="tab-link" data-tab="casos">Casos</button>
-      <button class="tab-link" data-tab="liga">Área da Liga</button>
+      <button class="tab-link" data-tab="liga">Área do ligante</button>
       <button class="tab-link" data-tab="upload">Upload</button>
     </nav>
   </header>
@@ -106,18 +106,30 @@
     </section>
 
     <section id="tab-liga" class="tab-section">
-      <h2>Área da Liga – SimuLACIR</h2>
+      <h2>Área do ligante – SimuLACIR</h2>
       <p>
         Esta área é destinada aos ligantes da Liga Acadêmica de Cirurgia da Bahia (LACIR).
-        Aqui serão disponibilizados casos oficiais, trilhas de estudo e materiais internos.
+        Aqui serão disponibilizados casos oficiais com acesso restrito e trilhas de estudo específicas.
       </p>
-      <p>
-        No momento, esta seção é apenas um esqueleto. No futuro, exibiremos aqui todos os casos
-        com <code>nivelAcesso: "liga"</code> ou <code>"seletivo"</code>.
-      </p>
-      <p>
-        Acesse usando a senha da liga para visualizar o conteúdo completo.
-      </p>
+
+      <div class="ligante-login">
+        <label for="senha-ligante">Senha do ligante:</label>
+        <div class="ligante-login-row">
+          <input type="password" id="senha-ligante" placeholder="Digite a senha da área do ligante" />
+          <button id="btn-login-ligante" type="button">Entrar</button>
+        </div>
+        <p id="ligante-mensagem" class="ligante-mensagem">
+          Apenas ligantes autorizados podem acessar os casos restritos.
+        </p>
+      </div>
+
+      <div id="ligante-conteudo" class="ligante-conteudo oculto">
+        <h3>Casos restritos da LACIR</h3>
+        <p>
+          Acesso liberado. Em breve, esta área exibirá todos os casos com
+          <code>nivelAcesso: "liga"</code> ou <code>"seletivo"</code>, carregados a partir dos arquivos oficiais.
+        </p>
+      </div>
     </section>
 
     <section id="tab-upload" class="tab-section">
@@ -138,10 +150,10 @@
 
       <h3>1. Baixe o modelo de caso</h3>
       <p>
-        Use o arquivo abaixo como referência para montar seus próprios casos:
+        O formato oficial de caso é o modelo complexo. Use o arquivo abaixo como referência:
       </p>
       <p>
-        <a href="docs/caso-modelo.json" download>Baixar modelo de caso (JSON)</a>
+        <a href="docs/caso-modelo-avancado.json" download>Baixar modelo de caso avançado (JSON)</a>
       </p>
 
       <h3>2. (Em desenvolvimento) Carregar um arquivo de caso</h3>
@@ -162,26 +174,12 @@
   </footer>
 
   <script>
-    const SENHA_LIGA = "simulacir2025";
-    let ligaDesbloqueada = false;
-
     const tabLinks = document.querySelectorAll(".tab-link");
     const tabSections = document.querySelectorAll(".tab-section");
 
     tabLinks.forEach((link) => {
       link.addEventListener("click", () => {
         const tab = link.getAttribute("data-tab");
-
-        if (tab === "liga" && !ligaDesbloqueada) {
-          const senha = window.prompt("Digite a senha da Liga (SimuLACIR):");
-          if (senha !== SENHA_LIGA) {
-            window.alert("Senha incorreta. Acesso restrito à Liga.");
-            return;
-          }
-          ligaDesbloqueada = true;
-          window.alert("Acesso à Área da Liga liberado.");
-        }
-
         tabLinks.forEach((l) => l.classList.remove("active"));
         tabSections.forEach((sec) => sec.classList.remove("active"));
 
@@ -224,12 +222,6 @@
       }
     ];
 
-    const senhaLigaInput = document.getElementById("senha-liga");
-    const btnSenhaLiga = document.getElementById("btn-senha-liga");
-    const conteudoLiga = document.getElementById("conteudo-liga");
-    const statusLiga = document.getElementById("status-liga");
-    const listaCasosLiga = document.getElementById("lista-casos-liga");
-
     let indiceCasoAtual = 0;
 
     // Referências aos elementos da interface
@@ -252,81 +244,6 @@
         btn.dataset.indice = indice.toString();
         li.appendChild(btn);
         listaCasosEl.appendChild(li);
-      });
-    }
-
-    function montarCasosLiga() {
-      if (!listaCasosLiga) return;
-      listaCasosLiga.innerHTML = "";
-
-      const casosRestritos = casos.filter((c) => c.nivelAcesso !== "publico");
-
-      if (casosRestritos.length === 0) {
-        const vazio = document.createElement("li");
-        vazio.classList.add("liga-cases__empty");
-        vazio.textContent = "Nenhum caso restrito cadastrado ainda. Em breve, publicaremos os casos oficiais da LACIR.";
-        listaCasosLiga.appendChild(vazio);
-        return;
-      }
-
-      casosRestritos.forEach((caso) => {
-        const item = document.createElement("li");
-        item.classList.add("liga-cases__item");
-
-        const titulo = document.createElement("h4");
-        titulo.textContent = caso.titulo;
-
-        const meta = document.createElement("p");
-        meta.classList.add("liga-cases__meta");
-        meta.textContent = `Fonte: ${caso.fonte.toUpperCase()} • Acesso: ${caso.nivelAcesso}`;
-
-        const tagList = document.createElement("div");
-        tagList.classList.add("liga-cases__tags");
-        caso.tags.forEach((tag) => {
-          const chip = document.createElement("span");
-          chip.classList.add("liga-tag");
-          chip.textContent = tag;
-          tagList.appendChild(chip);
-        });
-
-        item.appendChild(titulo);
-        item.appendChild(meta);
-        item.appendChild(tagList);
-
-        listaCasosLiga.appendChild(item);
-      });
-    }
-
-    montarCasosLiga();
-
-    function liberarLiga() {
-      if (ligaDesbloqueada) return;
-      const senhaDigitada = senhaLigaInput ? senhaLigaInput.value.trim() : "";
-
-      if (senhaDigitada !== SENHA_LIGA) {
-        window.alert("Senha incorreta. Verifique com a diretoria da liga.");
-        return;
-      }
-
-      ligaDesbloqueada = true;
-      if (conteudoLiga) {
-        conteudoLiga.classList.remove("bloqueado");
-      }
-      if (statusLiga) {
-        statusLiga.textContent = "🔓 Acesso liberado. Casos reservados visíveis para ligantes.";
-      }
-      window.alert("Acesso liberado para a área do ligante.");
-    }
-
-    if (btnSenhaLiga) {
-      btnSenhaLiga.addEventListener("click", liberarLiga);
-    }
-
-    if (senhaLigaInput) {
-      senhaLigaInput.addEventListener("keydown", (ev) => {
-        if (ev.key === "Enter") {
-          liberarLiga();
-        }
       });
     }
 
@@ -396,6 +313,49 @@
     if (casos.length > 0) {
       carregarCaso(0);
     }
+
+    const SENHA_LIGANTE = "simulacir2025"; // senha padrão por enquanto
+    let liganteDesbloqueado = false;
+
+    const inputSenhaLigante = document.getElementById("senha-ligante");
+    const btnLoginLigante = document.getElementById("btn-login-ligante");
+    const mensagemLigante = document.getElementById("ligante-mensagem");
+    const conteudoLigante = document.getElementById("ligante-conteudo");
+
+    function atualizarEstadoLigante() {
+      if (!conteudoLigante || !mensagemLigante) return;
+
+      if (liganteDesbloqueado) {
+        conteudoLigante.classList.remove("oculto");
+        mensagemLigante.textContent = "Acesso liberado. Você está vendo a área restrita para ligantes.";
+      } else {
+        conteudoLigante.classList.add("oculto");
+        mensagemLigante.textContent = "Apenas ligantes autorizados podem acessar os casos restritos.";
+      }
+    }
+
+    if (btnLoginLigante && inputSenhaLigante) {
+      btnLoginLigante.addEventListener("click", () => {
+        if (inputSenhaLigante.value === SENHA_LIGANTE) {
+          liganteDesbloqueado = true;
+          atualizarEstadoLigante();
+        } else {
+          liganteDesbloqueado = false;
+          atualizarEstadoLigante();
+          window.alert("Senha incorreta.");
+        }
+      });
+
+      // Permitir login com Enter
+      inputSenhaLigante.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          btnLoginLigante.click();
+        }
+      });
+    }
+
+    // Chamar ao carregar a página para garantir estado inicial
+    atualizarEstadoLigante();
   </script>
 </body>
 </html>

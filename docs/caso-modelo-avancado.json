@@ -1,0 +1,105 @@
+{
+  "versao": "1.0.0",
+  "tipo": "caso-avancado",
+  "id": "politrauma-colisao-avenida",
+  "titulo": "Politrauma após colisão em alta velocidade",
+  "especialidade": "trauma / cirurgia geral",
+  "dificuldade": "avançado",
+  "fonte": "oficial",
+  "nivelAcesso": "liga",
+  "tags": ["trauma", "ATLS", "vias aéreas", "choque hemorrágico"],
+  "contexto": "Caso modelo avançado em fluxo para o SimuLACIR, demonstrando múltiplas etapas sequenciais com decisões progressivas.",
+  "paciente": {
+    "idade": 32,
+    "sexo": "masculino",
+    "cenario": "Colisão automotiva em via urbana, resgatado pelo SAMU e conduzido ao pronto-socorro da LACIR.",
+    "sinaisVitais": {
+      "pressao": "90x60 mmHg",
+      "fc": "128 bpm",
+      "saturacao": "92% em O2 suplementar",
+      "fr": "26 irpm",
+      "glasgow": 13
+    }
+  },
+  "fluxo": [
+    {
+      "etapa": "avaliacao-inicial",
+      "titulo": "Avaliação primária — Vias aéreas e coluna cervical",
+      "enunciado": "Paciente chega agitado, fala frases curtas, com sangue em cavidade oral e suspeita de fratura mandibular. Colar cervical posicionado. Qual a melhor abordagem inicial?",
+      "alternativas": [
+        {
+          "id": "a",
+          "texto": "Realizar manobra de tração mandibular e aspirar secreções, mantendo imobilização cervical.",
+          "correta": true,
+          "feedback": "Correta: prioriza vias aéreas com proteção cervical, melhora a permeabilidade e prepara para intubação se necessária."
+        },
+        {
+          "id": "b",
+          "texto": "Retirar o colar cervical para facilitar a abertura da via aérea.",
+          "correta": false,
+          "feedback": "Incorreta: retirar a imobilização expõe a coluna cervical a risco de lesão."
+        },
+        {
+          "id": "c",
+          "texto": "Administrar sedação profunda imediatamente para intubação sem pré-oxigenação.",
+          "correta": false,
+          "feedback": "Incorreta: sedação sem preparo aumenta risco de dessaturação e perda de via aérea difícil."
+        }
+      ],
+      "referencias": ["ATLS 10ª edição — manejo de vias aéreas no politrauma"]
+    },
+    {
+      "etapa": "circulacao",
+      "titulo": "Controle de hemorragia e reposição volêmica",
+      "enunciado": "Após aspiração e estabilização da via aérea, paciente mantém hipotensão. Sangramento ativo em face e suspeita de sangramento interno. Qual a conduta imediata?",
+      "alternativas": [
+        {
+          "id": "a",
+          "texto": "Iniciar duas vias calibrosas, infundir cristaloide aquecido e acionar protocolo de transfusão maciça.",
+          "correta": true,
+          "feedback": "Correta: reanimação hemostática rápida, priorizando controle de choque hemorrágico e preparo para hemoderivados."
+        },
+        {
+          "id": "b",
+          "texto": "Aguardar exames de imagem para decidir sobre reposição volêmica.",
+          "correta": false,
+          "feedback": "Incorreta: paciente instável requer reposição imediata e medidas para controle de hemorragia."
+        },
+        {
+          "id": "c",
+          "texto": "Administrar apenas analgesia endovenosa e observar evolução.",
+          "correta": false,
+          "feedback": "Incorreta: manejo conservador não aborda o choque hemorrágico em curso."
+        }
+      ],
+      "referencias": ["Protocolo de transfusão maciça — LACIR 2025", "ATLS — Circulação e controle de hemorragia"]
+    },
+    {
+      "etapa": "imagem-e-triagem",
+      "titulo": "Decisão sobre exames de imagem",
+      "enunciado": "Após estabilização inicial, paciente persiste taquicárdico, mas responde à reposição. Suspeita de lesão abdominal e pélvica. Qual exame priorizar?",
+      "alternativas": [
+        {
+          "id": "a",
+          "texto": "FAST à beira-leito, seguido de tomografia de corpo inteiro se hemodinamicamente possível.",
+          "correta": true,
+          "feedback": "Correta: FAST identifica líquido livre rapidamente e a tomografia direciona condutas definitivas se o paciente tolerar." 
+        },
+        {
+          "id": "b",
+          "texto": "Aguardar laboratório completo antes de qualquer imagem.",
+          "correta": false,
+          "feedback": "Incorreta: atrasaria diagnóstico em contexto de trauma potencialmente instável." 
+        },
+        {
+          "id": "c",
+          "texto": "Solicitar radiografia de tórax e alta se resultados forem normais.",
+          "correta": false,
+          "feedback": "Incorreta: insuficiente para descartar lesões graves no politrauma."
+        }
+      ],
+      "referencias": ["FAST no trauma — diretrizes LACIR", "WSES guidelines for pelvic trauma"]
+    }
+  ],
+  "observacoes": "Este arquivo é um modelo de referência. Os campos podem ser adaptados, mantendo a estrutura de fluxo com enunciado, alternativas, feedback e referências."
+}
