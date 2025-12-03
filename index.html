@@ -131,25 +131,54 @@
   </footer>
 
   <script>
-    // Lógica simples da simulação do caso demo
-    const explicacoes = {
-      a: {
-        correta: false,
-        texto: "Inadequado: quadro típico de dor torácica isquêmica em paciente de alto risco. Tratar como dor muscular e apenas prescrever AINE atrasa o diagnóstico de síndrome coronariana aguda."
-      },
-      b: {
-        correta: true,
-        texto: "Correto: trata-se de dor torácica com características típicas, em paciente com fatores de risco cardiovasculares. A conduta é encaminhar para sala de emergência, monitorizar, realizar ECG e exames iniciais, e iniciar manejo de síndrome coronariana aguda conforme protocolos."
-      },
-      c: {
-        correta: false,
-        texto: "Inadequado: teste ergométrico ambulatorial não é indicado como primeira abordagem em paciente com dor torácica típica em evolução. Primeiro, é obrigatório excluir/confirmar síndrome coronariana aguda."
-      },
-      d: {
-        correta: false,
-        texto: "Inadequado: embora RX de tórax possa ser útil em contexto de dor torácica, não é o exame inicial prioritário diante de forte suspeita de síndrome coronariana aguda. ECG e manejo imediato são prioritários."
+    const casos = [
+      {
+        id: "dor-toracica",
+        titulo: "Paciente com dor torácica",
+        enunciado: "Homem, 58 anos, hipertenso, tabagista, procura o pronto-atendimento por dor torácica em aperto iniciada há cerca de 2 horas, irradiando para o braço esquerdo, associada a sudorese fria e náuseas. Ao exame: PA 150/90 mmHg, FC 100 bpm, saturação 94% em ar ambiente. Não há sinais de instabilidade hemodinâmica importante. Qual a melhor conduta imediata?",
+        alternativas: {
+          a: "Prescrever AINE para dor muscular e orientar retorno se piorar.",
+          b: "Encaminhar imediatamente para sala de emergência, realizar ECG e iniciar manejo de síndrome coronariana aguda.",
+          c: "Solicitar teste ergométrico ambulatorial e dar alta, pois está estável.",
+          d: "Solicitar apenas radiografia de tórax e aguardar o resultado para decidir."
+        },
+        correta: "b",
+        explicacoes: {
+          a: "Inadequado: quadro típico de dor torácica isquêmica em paciente de alto risco. Tratar como dor muscular e apenas prescrever AINE atrasa o diagnóstico de síndrome coronariana aguda.",
+          b: "Correto: trata-se de dor torácica com características típicas, em paciente com fatores de risco cardiovasculares. A conduta é encaminhar para sala de emergência, monitorizar, realizar ECG e exames iniciais, e iniciar manejo de síndrome coronariana aguda conforme protocolos.",
+          c: "Inadequado: teste ergométrico ambulatorial não é indicado como primeira abordagem em paciente com dor torácica típica em evolução. Primeiro, é obrigatório excluir/confirmar síndrome coronariana aguda.",
+          d: "Inadequado: embora RX de tórax possa ser útil em contexto de dor torácica, não é o exame inicial prioritário diante de forte suspeita de síndrome coronariana aguda. ECG e manejo imediato são prioritários."
+        }
       }
-    };
+    ];
+
+    let indiceCasoAtual = 0;
+
+    function carregarCaso(index) {
+      indiceCasoAtual = index;
+      const caso = casos[indiceCasoAtual];
+
+      const tituloEl = document.querySelector(".case-card h3");
+      const enunciadoEl = document.getElementById("enunciado");
+      const botoes = document.querySelectorAll(".opcao-btn");
+      const resultadoDiv = document.getElementById("resultado");
+
+      if (!tituloEl || !enunciadoEl || !resultadoDiv || botoes.length === 0) {
+        console.error("Elementos do caso clínico não encontrados no HTML.");
+        return;
+      }
+
+      tituloEl.textContent = caso.titulo;
+      enunciadoEl.textContent = caso.enunciado;
+
+      botoes.forEach((btn) => {
+        const alt = btn.getAttribute("data-alt"); // a, b, c, d
+        btn.classList.remove("correta", "errada");
+        btn.textContent = `${alt}) ${caso.alternativas[alt]}`;
+      });
+
+      resultadoDiv.innerHTML = "<p>Escolha uma alternativa para ver o feedback.</p>";
+    }
 
     const botoes = document.querySelectorAll(".opcao-btn");
     const resultadoDiv = document.getElementById("resultado");
@@ -157,19 +186,21 @@
     botoes.forEach((btn) => {
       btn.addEventListener("click", () => {
         const alt = btn.getAttribute("data-alt");
-        const info = explicacoes[alt];
+        const caso = casos[indiceCasoAtual];
 
-        // limpa estado visual
-        botoes.forEach(b => b.classList.remove("correta", "errada"));
+        const info = {
+          correta: caso.correta === alt,
+          texto: caso.explicacoes[alt]
+        };
 
-        // aplica destaque
+        botoes.forEach((b) => b.classList.remove("correta", "errada"));
+
         if (info.correta) {
           btn.classList.add("correta");
         } else {
           btn.classList.add("errada");
         }
 
-        // mostra feedback
         resultadoDiv.innerHTML = `
           <p><strong>Você escolheu: (${alt})</strong></p>
           <p class="${info.correta ? "texto-correto" : "texto-errado"}">
@@ -179,6 +210,9 @@
         `;
       });
     });
+
+    // carrega o primeiro caso assim que a página abrir
+    carregarCaso(0);
   </script>
 </body>
 </html>
