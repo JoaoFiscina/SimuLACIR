@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulador de Casos Clínicos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">Simulador<span>Clínico</span></div>
+    <nav>
+      <a href="#sobre">Sobre</a>
+      <a href="#caso-demo">Caso demo</a>
+      <a href="#upload">Upload de caso</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO / APRESENTAÇÃO -->
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Simulador de Casos Clínicos interativo</h1>
+        <p>
+          Treine raciocínio clínico em cenários práticos, com alternativas, feedback imediato
+          e explicações do porquê cada conduta está certa ou errada.
+        </p>
+        <a href="#caso-demo" class="btn-primary">Começar pela simulação demo</a>
+      </div>
+    </section>
+
+    <!-- SEÇÃO SOBRE -->
+    <section id="sobre" class="section">
+      <h2>Como este site vai funcionar</h2>
+      <p>
+        A ideia do projeto é permitir que você:
+      </p>
+      <ol>
+        <li>Importe um arquivo de caso clínico (por exemplo, um texto estruturado);</li>
+        <li>O sistema crie uma simulação com perguntas e alternativas;</li>
+        <li>Você receba feedback imediato, com explicação do erro e da conduta correta;</li>
+        <li>Com o tempo, usar inteligência artificial para gerar cenários cada vez mais completos.</li>
+      </ol>
+      <p>
+        Esta é a <strong>primeira versão</strong>, focada na interface e em um caso clínico de demonstração.
+      </p>
+    </section>
+
+    <!-- CASO CLÍNICO DEMO -->
+    <section id="caso-demo" class="section">
+      <h2>Caso clínico de demonstração</h2>
+      <p class="section-subtitle">
+        Leia o caso, escolha a melhor conduta e veja o feedback.
+      </p>
+
+      <div class="case-card">
+        <h3>Paciente com dor torácica</h3>
+        <p id="enunciado">
+          Homem, 58 anos, hipertenso, tabagista, procura o pronto-atendimento por dor torácica em aperto
+          iniciada há cerca de 2 horas, irradiando para o braço esquerdo, associada a sudorese fria e náuseas.
+          Ao exame: PA 150/90 mmHg, FC 100 bpm, saturação 94% em ar ambiente. 
+          Não há sinais de instabilidade hemodinâmica importante.
+          Qual a melhor conduta imediata?
+        </p>
+
+        <ul class="opcoes-lista">
+          <li>
+            <button class="opcao-btn" data-alt="a">
+              a) Prescrever AINE para dor muscular e orientar retorno se piorar.
+            </button>
+          </li>
+          <li>
+            <button class="opcao-btn" data-alt="b">
+              b) Encaminhar imediatamente para sala de emergência, realizar ECG e iniciar manejo de síndrome coronariana aguda.
+            </button>
+          </li>
+          <li>
+            <button class="opcao-btn" data-alt="c">
+              c) Solicitar teste ergométrico ambulatorial e dar alta, pois está estável.
+            </button>
+          </li>
+          <li>
+            <button class="opcao-btn" data-alt="d">
+              d) Solicitar apenas radiografia de tórax e aguardar o resultado para decidir.
+            </button>
+          </li>
+        </ul>
+
+        <div id="resultado" class="resultado">
+          <p>Escolha uma alternativa para ver o feedback.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- UPLOAD / VERSÃO FUTURA -->
+    <section id="upload" class="section">
+      <h2>Upload de caso clínico (em construção)</h2>
+      <p>
+        Nesta primeira versão, o upload ainda não processa o arquivo — a ideia é só
+        esboçar a interface. Em futuras versões, vamos conectar isso a um backend/IA
+        que converta o caso em simulações interativas.
+      </p>
+
+      <div class="upload-box">
+        <label for="fileInput">Selecione um arquivo de caso clínico (ex: .txt, .md):</label>
+        <input id="fileInput" type="file" disabled>
+        <p class="upload-info">
+          ⚠️ Ainda não funcional — recurso planejado para versões futuras.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Projeto em desenvolvimento — Simulador de Casos Clínicos.</p>
+  </footer>
+
+  <script>
+    // Lógica simples da simulação do caso demo
+    const explicacoes = {
+      a: {
+        correta: false,
+        texto: "Inadequado: quadro típico de dor torácica isquêmica em paciente de alto risco. Tratar como dor muscular e apenas prescrever AINE atrasa o diagnóstico de síndrome coronariana aguda."
+      },
+      b: {
+        correta: true,
+        texto: "Correto: trata-se de dor torácica com características típicas, em paciente com fatores de risco cardiovasculares. A conduta é encaminhar para sala de emergência, monitorizar, realizar ECG e exames iniciais, e iniciar manejo de síndrome coronariana aguda conforme protocolos."
+      },
+      c: {
+        correta: false,
+        texto: "Inadequado: teste ergométrico ambulatorial não é indicado como primeira abordagem em paciente com dor torácica típica em evolução. Primeiro, é obrigatório excluir/confirmar síndrome coronariana aguda."
+      },
+      d: {
+        correta: false,
+        texto: "Inadequado: embora RX de tórax possa ser útil em contexto de dor torácica, não é o exame inicial prioritário diante de forte suspeita de síndrome coronariana aguda. ECG e manejo imediato são prioritários."
+      }
+    };
+
+    const botoes = document.querySelectorAll(".opcao-btn");
+    const resultadoDiv = document.getElementById("resultado");
+
+    botoes.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const alt = btn.getAttribute("data-alt");
+        const info = explicacoes[alt];
+
+        // limpa estado visual
+        botoes.forEach(b => b.classList.remove("correta", "errada"));
+
+        // aplica destaque
+        if (info.correta) {
+          btn.classList.add("correta");
+        } else {
+          btn.classList.add("errada");
+        }
+
+        // mostra feedback
+        resultadoDiv.innerHTML = `
+          <p><strong>Você escolheu: (${alt})</strong></p>
+          <p class="${info.correta ? "texto-correto" : "texto-errado"}">
+            ${info.correta ? "✅ Resposta correta." : "❌ Resposta incorreta."}
+          </p>
+          <p>${info.texto}</p>
+        `;
+      });
+    });
+  </script>
+</body>
+</html>
