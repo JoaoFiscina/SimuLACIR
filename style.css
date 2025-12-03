@@ -336,3 +336,38 @@ body {
     padding: 2.2rem 1.4rem;
   }
 }
+
+.tabs-nav {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.tabs-nav .tab-link {
+  border: none;
+  background: transparent;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #4b5563;
+  border-bottom: 2px solid transparent;
+}
+
+.tabs-nav .tab-link:hover {
+  color: #16a34a;
+}
+
+.tabs-nav .tab-link.active {
+  color: #16a34a;
+  border-bottom-color: #16a34a;
+  font-weight: 600;
+}
+
+.tab-section {
+  display: none;
+  margin-top: 1rem;
+}
+
+.tab-section.active {
+  display: block;
+}
