@@ -12,6 +12,7 @@
     <nav class="tabs-nav">
       <button class="tab-link active" data-tab="inicio">Início</button>
       <button class="tab-link" data-tab="casos">Casos</button>
+      <button class="tab-link" data-tab="liga">Área do Ligante</button>
       <button class="tab-link" data-tab="upload">Upload</button>
     </nav>
   </header>
@@ -104,6 +105,47 @@
       </section>
     </section>
 
+    <section id="tab-liga" class="tab-section">
+      <div class="liga-hero">
+        <div class="liga-hero__badge">Área do ligante</div>
+        <h2>Área do ligante – SimuLACIR</h2>
+        <p>
+          Espaço reservado para membros da Liga Acadêmica de Cirurgia da Bahia (LACIR). Aqui ficarão os casos oficiais,
+          trilhas de estudo e materiais internos.
+        </p>
+        <p>
+          No futuro, esta aba exibirá automaticamente todos os casos com <code>nivelAcesso: "liga"</code> ou
+          <code>"seletivo"</code>. Por enquanto, use a senha para desbloquear a visualização dos casos restritos.
+        </p>
+      </div>
+
+      <div class="liga-access">
+        <div class="liga-access__card">
+          <div class="liga-lockup">
+            <div class="liga-lockup__icon" aria-hidden="true">🔐</div>
+            <div>
+              <p class="liga-lockup__title">Desbloqueie o painel de casos</p>
+              <p class="liga-lockup__subtitle">Digite a senha da liga para liberar o conteúdo reservado.</p>
+            </div>
+          </div>
+          <div class="liga-access__controls">
+            <label for="senha-liga" class="sr-only">Senha da liga</label>
+            <input id="senha-liga" type="password" placeholder="Senha da Liga" autocomplete="current-password" />
+            <button id="btn-senha-liga" class="btn-primary" type="button">Desbloquear</button>
+          </div>
+          <p class="liga-access__hint">Senha temporária para teste: use a mesma combinada com a diretoria.</p>
+        </div>
+
+        <div id="conteudo-liga" class="liga-cases bloqueado" aria-live="polite">
+          <div class="liga-cases__header">
+            <div class="liga-cases__chip">Casos oficiais</div>
+            <p id="status-liga" class="liga-status">🔒 Acesso restrito. Desbloqueie para ver os casos reservados.</p>
+          </div>
+          <ul id="lista-casos-liga" class="liga-cases__list"></ul>
+        </div>
+      </div>
+    </section>
+
     <section id="tab-upload" class="tab-section">
       <!-- UPLOAD / VERSÃO FUTURA -->
       <section id="upload" class="section">
@@ -130,6 +172,9 @@
   </footer>
 
   <script>
+    const SENHA_LIGA = "simulacir2025";
+    let ligaDesbloqueada = false;
+
     const tabLinks = document.querySelectorAll(".tab-link");
     const tabSections = document.querySelectorAll(".tab-section");
 
@@ -152,6 +197,9 @@
       {
         id: "dor-toracica",
         titulo: "Paciente com dor torácica",
+        fonte: "oficial",
+        nivelAcesso: "publico",
+        tags: ["urgência", "dor torácica", "cardiologia", "pronto-atendimento"],
         enunciado:
           "Homem, 58 anos, hipertenso, tabagista, procura o pronto-atendimento por dor torácica em aperto iniciada há cerca de 2 horas, irradiando para o braço esquerdo, associada a sudorese fria e náuseas. Ao exame: PA 150/90 mmHg, FC 100 bpm, saturação 94% em ar ambiente. Não há sinais de instabilidade hemodinâmica importante. Qual a melhor conduta imediata?",
         alternativas: {
@@ -169,6 +217,12 @@
         }
       }
     ];
+
+    const senhaLigaInput = document.getElementById("senha-liga");
+    const btnSenhaLiga = document.getElementById("btn-senha-liga");
+    const conteudoLiga = document.getElementById("conteudo-liga");
+    const statusLiga = document.getElementById("status-liga");
+    const listaCasosLiga = document.getElementById("lista-casos-liga");
 
     let indiceCasoAtual = 0;
 
@@ -192,6 +246,81 @@
         btn.dataset.indice = indice.toString();
         li.appendChild(btn);
         listaCasosEl.appendChild(li);
+      });
+    }
+
+    function montarCasosLiga() {
+      if (!listaCasosLiga) return;
+      listaCasosLiga.innerHTML = "";
+
+      const casosRestritos = casos.filter((c) => c.nivelAcesso !== "publico");
+
+      if (casosRestritos.length === 0) {
+        const vazio = document.createElement("li");
+        vazio.classList.add("liga-cases__empty");
+        vazio.textContent = "Nenhum caso restrito cadastrado ainda. Em breve, publicaremos os casos oficiais da LACIR.";
+        listaCasosLiga.appendChild(vazio);
+        return;
+      }
+
+      casosRestritos.forEach((caso) => {
+        const item = document.createElement("li");
+        item.classList.add("liga-cases__item");
+
+        const titulo = document.createElement("h4");
+        titulo.textContent = caso.titulo;
+
+        const meta = document.createElement("p");
+        meta.classList.add("liga-cases__meta");
+        meta.textContent = `Fonte: ${caso.fonte.toUpperCase()} • Acesso: ${caso.nivelAcesso}`;
+
+        const tagList = document.createElement("div");
+        tagList.classList.add("liga-cases__tags");
+        caso.tags.forEach((tag) => {
+          const chip = document.createElement("span");
+          chip.classList.add("liga-tag");
+          chip.textContent = tag;
+          tagList.appendChild(chip);
+        });
+
+        item.appendChild(titulo);
+        item.appendChild(meta);
+        item.appendChild(tagList);
+
+        listaCasosLiga.appendChild(item);
+      });
+    }
+
+    montarCasosLiga();
+
+    function liberarLiga() {
+      if (ligaDesbloqueada) return;
+      const senhaDigitada = senhaLigaInput ? senhaLigaInput.value.trim() : "";
+
+      if (senhaDigitada !== SENHA_LIGA) {
+        window.alert("Senha incorreta. Verifique com a diretoria da liga.");
+        return;
+      }
+
+      ligaDesbloqueada = true;
+      if (conteudoLiga) {
+        conteudoLiga.classList.remove("bloqueado");
+      }
+      if (statusLiga) {
+        statusLiga.textContent = "🔓 Acesso liberado. Casos reservados visíveis para ligantes.";
+      }
+      window.alert("Acesso liberado para a área do ligante.");
+    }
+
+    if (btnSenhaLiga) {
+      btnSenhaLiga.addEventListener("click", liberarLiga);
+    }
+
+    if (senhaLigaInput) {
+      senhaLigaInput.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter") {
+          liberarLiga();
+        }
       });
     }
 
