@@ -9,120 +9,126 @@
 <body>
   <header class="topbar">
     <div class="logo">Simulador<span>Clínico</span></div>
-    <nav>
-      <a href="#sobre">Sobre</a>
-      <a href="#caso-demo">Caso demo</a>
-      <a href="#upload">Upload de caso</a>
+    <nav class="tabs-nav">
+      <button class="tab-link active" data-tab="inicio">Início</button>
+      <button class="tab-link" data-tab="casos">Casos</button>
+      <button class="tab-link" data-tab="upload">Upload</button>
     </nav>
   </header>
 
   <main>
-    <!-- HERO / APRESENTAÇÃO -->
-    <section class="hero">
-      <div class="hero-text">
-        <h1>SimuLACIR – simulador de casos clínicos da LACIR Bahia</h1>
-        <p>
-          Uma plataforma em desenvolvimento para treinar decisões em cirurgia e
-          urgências, com casos interativos, alternativas comentadas e feedback imediato.
-        </p>
-        <a href="#caso-demo" class="btn-primary">Começar pelo caso de demonstração</a>
-      </div>
-    </section>
-
-    <!-- SEÇÃO SOBRE -->
-    <section id="sobre" class="section">
-      <h2>Bem-vindo ao SimuLACIR</h2>
-      <p>
-        O <strong>SimuLACIR</strong> é o simulador de casos clínicos da
-        <strong>Liga Acadêmica de Cirurgia da Bahia (LACIR)</strong>.
-        Ele foi criado para que estudantes de medicina possam treinar
-        raciocínio clínico em um ambiente seguro, interativo e focado em
-        tomada de decisão.
-      </p>
-      <p>
-        A proposta é transformar casos reais e situações do dia a dia da
-        cirurgia em cenários simulados, com alternativas de conduta,
-        feedback imediato e explicações comentadas sobre o porquê de cada
-        escolha.
-      </p>
-      <p>
-        Esta é a <strong>primeira versão</strong> da plataforma. Aos
-        poucos, vamos:
-      </p>
-      <ol>
-        <li>Adicionar novos casos clínicos cirúrgicos e de pronto-atendimento;</li>
-        <li>Estruturar etapas do caso (anamnese, exame físico, exames, conduta);</li>
-        <li>Permitir importar casos em formato de arquivo padronizado;</li>
-        <li>Integrar ferramentas de inteligência artificial para gerar e corrigir cenários automaticamente.</li>
-      </ol>
-      <p>
-        Sinta-se à vontade para explorar, testar e dar feedback. O SimuLACIR
-        está em construção contínua – assim como o nosso aprendizado.
-      </p>
-    </section>
-
-    <!-- CASO CLÍNICO DEMO -->
-    <section id="caso-demo" class="section">
-      <h2>Caso clínico de demonstração</h2>
-      <p class="section-subtitle">
-        Leia o caso, escolha a melhor conduta e veja o feedback.
-      </p>
-
-      <div class="case-card">
-        <h3>Paciente com dor torácica</h3>
-        <p id="enunciado">
-          Homem, 58 anos, hipertenso, tabagista, procura o pronto-atendimento por dor torácica em aperto
-          iniciada há cerca de 2 horas, irradiando para o braço esquerdo, associada a sudorese fria e náuseas.
-          Ao exame: PA 150/90 mmHg, FC 100 bpm, saturação 94% em ar ambiente. 
-          Não há sinais de instabilidade hemodinâmica importante.
-          Qual a melhor conduta imediata?
-        </p>
-
-        <ul class="opcoes-lista">
-          <li>
-            <button class="opcao-btn" data-alt="a">
-              a) Prescrever AINE para dor muscular e orientar retorno se piorar.
-            </button>
-          </li>
-          <li>
-            <button class="opcao-btn" data-alt="b">
-              b) Encaminhar imediatamente para sala de emergência, realizar ECG e iniciar manejo de síndrome coronariana aguda.
-            </button>
-          </li>
-          <li>
-            <button class="opcao-btn" data-alt="c">
-              c) Solicitar teste ergométrico ambulatorial e dar alta, pois está estável.
-            </button>
-          </li>
-          <li>
-            <button class="opcao-btn" data-alt="d">
-              d) Solicitar apenas radiografia de tórax e aguardar o resultado para decidir.
-            </button>
-          </li>
-        </ul>
-
-        <div id="resultado" class="resultado">
-          <p>Escolha uma alternativa para ver o feedback.</p>
+    <section id="tab-inicio" class="tab-section active">
+      <!-- HERO / APRESENTAÇÃO -->
+      <section class="hero">
+        <div class="hero-text">
+          <h1>SimuLACIR – simulador de casos clínicos da LACIR Bahia</h1>
+          <p>
+            Uma plataforma em desenvolvimento para treinar decisões em cirurgia e
+            urgências, com casos interativos, alternativas comentadas e feedback imediato.
+          </p>
+          <a href="#caso-demo" class="btn-primary">Começar pelo caso de demonstração</a>
         </div>
-      </div>
+      </section>
+
+      <!-- SEÇÃO SOBRE -->
+      <section id="sobre" class="section">
+        <h2>Bem-vindo ao SimuLACIR</h2>
+        <p>
+          O <strong>SimuLACIR</strong> é o simulador de casos clínicos da
+          <strong>Liga Acadêmica de Cirurgia da Bahia (LACIR)</strong>.
+          Ele foi criado para que estudantes de medicina possam treinar
+          raciocínio clínico em um ambiente seguro, interativo e focado em
+          tomada de decisão.
+        </p>
+
+        <p>
+          Nesta demonstração inicial, oferecemos um caso clínico básico para
+          ilustrar a ideia. No futuro, queremos disponibilizar uma biblioteca
+          com dezenas de casos, níveis de dificuldade, histórico e feedback
+          personalizado.
+        </p>
+
+        <div class="cards-grid">
+          <div class="info-card">
+            <h3>Casos realistas</h3>
+            <p>
+              Enunciados curtos, objetivos e próximos do dia a dia, com alternativas de conduta e explicações.
+            </p>
+          </div>
+          <div class="info-card">
+            <h3>Feedback imediato</h3>
+            <p>
+              Ao clicar em uma opção, você recebe comentários e referências rápidas sobre a decisão.
+            </p>
+          </div>
+          <div class="info-card">
+            <h3>Foco em tomada de decisão</h3>
+            <p>
+              Não é apenas memorizar: queremos reforçar o raciocínio clínico e a escolha da melhor conduta.
+            </p>
+          </div>
+        </div>
+      </section>
     </section>
 
-    <!-- UPLOAD / VERSÃO FUTURA -->
-    <section id="upload" class="section">
-      <h2>Upload de caso clínico (em construção)</h2>
-      <p>
-        Nesta primeira versão, o upload ainda não processa o arquivo — a ideia é só
-        esboçar a interface. Em futuras versões, vamos conectar isso a um backend/IA
-        que converta o caso em simulações interativas.
-      </p>
+    <section id="tab-casos" class="tab-section">
+      <!-- CASO DEMONSTRATIVO -->
+      <section id="caso-demo" class="section">
+        <div class="section-header">
+          <div>
+            <p class="section-kicker">Caso clínico de demonstração</p>
+            <h2>Paciente com dor torácica</h2>
+            <p>
+              Interaja com um caso simples para testar a experiência do simulador.
+            </p>
+          </div>
+          <button class="btn-secondary">Carregar outro caso (em breve)</button>
+        </div>
 
-      <div class="upload-box">
-        <label for="fileInput">Selecione um arquivo de caso clínico (ex: .txt, .md):</label>
-        <input id="fileInput" type="file" disabled>
-        <p class="upload-info">
-          ⚠️ Ainda não funcional — recurso planejado para versões futuras.
+        <div class="case-card">
+          <h3>Carregando caso...</h3>
+          <p id="enunciado"></p>
+
+          <ul class="alternativas">
+            <li>
+              <button class="opcao-btn" data-alt="a"></button>
+            </li>
+            <li>
+              <button class="opcao-btn" data-alt="b"></button>
+            </li>
+            <li>
+              <button class="opcao-btn" data-alt="c"></button>
+            </li>
+            <li>
+              <button class="opcao-btn" data-alt="d"></button>
+            </li>
+          </ul>
+
+          <div id="resultado" class="resultado">
+            <p>Escolha uma alternativa para ver o feedback.</p>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section id="tab-upload" class="tab-section">
+      <!-- UPLOAD / VERSÃO FUTURA -->
+      <section id="upload" class="section">
+        <h2>Upload de caso clínico (em construção)</h2>
+        <p>
+          Nesta primeira versão, o upload ainda não processa o arquivo — a ideia é só
+          esboçar a interface. Em futuras versões, vamos conectar isso a um backend/IA
+          que converta o caso em simulações interativas.
         </p>
-      </div>
+
+        <div class="upload-box">
+          <label for="fileInput">Selecione um arquivo de caso clínico (ex: .txt, .md):</label>
+          <input id="fileInput" type="file" disabled>
+          <p class="upload-info">
+            ⚠️ Ainda não funcional — recurso planejado para versões futuras.
+          </p>
+        </div>
+      </section>
     </section>
   </main>
 
@@ -131,6 +137,24 @@
   </footer>
 
   <script>
+    const tabLinks = document.querySelectorAll(".tab-link");
+    const tabSections = document.querySelectorAll(".tab-section");
+
+    tabLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        const tab = link.getAttribute("data-tab");
+
+        tabLinks.forEach((l) => l.classList.remove("active"));
+        tabSections.forEach((sec) => sec.classList.remove("active"));
+
+        link.classList.add("active");
+        const alvo = document.getElementById("tab-" + tab);
+        if (alvo) {
+          alvo.classList.add("active");
+        }
+      });
+    });
+
     const casos = [
       {
         id: "dor-toracica",
