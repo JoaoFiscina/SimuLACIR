@@ -5,6 +5,13 @@
   <title>Simulador de Casos Clínicos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
 </head>
 <body>
   <header class="topbar">
@@ -113,22 +120,69 @@
       </p>
 
       <div class="ligante-login">
+        <div class="ligante-login__header">
+          <div class="ligante-login__badge"><i class="fa-solid fa-user-shield"></i></div>
+          <div>
+            <p class="ligante-login__title">Acesso seguro para ligantes</p>
+            <small>Use a senha da liga para liberar o conteúdo restrito.</small>
+          </div>
+        </div>
         <label for="senha-ligante">Senha do ligante:</label>
         <div class="ligante-login-row">
-          <input type="password" id="senha-ligante" placeholder="Digite a senha da área do ligante" />
-          <button id="btn-login-ligante" type="button">Entrar</button>
+          <div class="input-embbed">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="senha-ligante" placeholder="Digite a senha da área do ligante" />
+          </div>
+          <button id="btn-login-ligante" type="button" class="btn-primary">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            <span>Entrar</span>
+          </button>
         </div>
-        <p id="ligante-mensagem" class="ligante-mensagem">
-          Apenas ligantes autorizados podem acessar os casos restritos.
+        <p id="ligante-mensagem" class="ligante-mensagem" aria-live="polite">
+          <span class="msg-icon">ℹ️</span>
+          <span>Apenas ligantes autorizados podem acessar os casos restritos.</span>
         </p>
       </div>
 
-      <div id="ligante-conteudo" class="ligante-conteudo oculto">
-        <h3>Casos restritos da LACIR</h3>
-        <p>
-          Acesso liberado. Em breve, esta área exibirá todos os casos com
-          <code>nivelAcesso: "liga"</code> ou <code>"seletivo"</code>, carregados a partir dos arquivos oficiais.
-        </p>
+      <div id="ligante-conteudo" class="ligante-conteudo oculto" aria-live="polite">
+        <div class="ligante-conteudo__header">
+          <div>
+            <p class="ligante-conteudo__eyebrow"><i class="fa-solid fa-shield-heart"></i> Conteúdo seguro</p>
+            <h3>Casos restritos da LACIR</h3>
+            <p>
+              Acesso liberado. Em breve, esta área exibirá todos os casos com
+              <code>nivelAcesso: "liga"</code> ou <code>"seletivo"</code>, carregados a partir dos arquivos oficiais.
+            </p>
+          </div>
+          <div class="ligante-status-chip"><i class="fa-solid fa-circle-check"></i> Acesso validado</div>
+        </div>
+
+        <div class="ligante-conteudo__grid">
+          <div class="ligante-conteudo__box">
+            <div class="ligante-conteudo__info">
+              <i class="fa-solid fa-graduation-cap"></i>
+              <div>
+                <p class="ligante-conteudo__label">Trilha de estudo</p>
+                <p>Organize revisões e selecione o caso avançado ideal para treinar.</p>
+              </div>
+            </div>
+            <div class="ligante-conteudo__pillset">
+              <span class="pill"><i class="fa-solid fa-bolt"></i> Condutas rápidas</span>
+              <span class="pill"><i class="fa-solid fa-heart-pulse"></i> Emergências</span>
+              <span class="pill"><i class="fa-solid fa-stethoscope"></i> Pós-operatório</span>
+            </div>
+          </div>
+          <div class="ligante-conteudo__box ligante-conteudo__box--shadow">
+            <div class="ligante-conteudo__box-header">
+              <h4>Casos clínicos avançados</h4>
+              <button class="ghost-button" type="button" id="liga-refresh">
+                <i class="fa-solid fa-rotate"></i>
+                Atualizar lista
+              </button>
+            </div>
+            <div id="liga-cases-grid" class="liga-cases-grid"></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -172,6 +226,10 @@
   <footer class="footer">
     <p>Projeto em desenvolvimento — Simulador de Casos Clínicos.</p>
   </footer>
+
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Alternar modo escuro">
+    <i class="fa-solid fa-moon"></i>
+  </button>
 
   <script>
     const tabLinks = document.querySelectorAll(".tab-link");
@@ -321,17 +379,112 @@
     const btnLoginLigante = document.getElementById("btn-login-ligante");
     const mensagemLigante = document.getElementById("ligante-mensagem");
     const conteudoLigante = document.getElementById("ligante-conteudo");
+    const ligaCasesGrid = document.getElementById("liga-cases-grid");
+    const btnRefreshCasos = document.getElementById("liga-refresh");
+
+    const casosAvancados = [
+      {
+        nome: "Trauma abdominal avançado",
+        nivel: "ligante",
+        tags: ["trauma", "abdome agudo", "FAST"],
+      },
+      {
+        nome: "Choque séptico no pós-operatório",
+        nivel: "seletivo",
+        tags: ["UTI", "fluido terapia", "antibiótico"],
+      },
+      {
+        nome: "Politrauma em via aérea difícil",
+        nivel: "liga",
+        tags: ["vias aéreas", "Ranson", "intubação"],
+      },
+      {
+        nome: "Síndrome compartimental pós fratura",
+        nivel: "seletivo",
+        tags: ["ortopedia", "perfusão", "compartimento"],
+      },
+    ];
+
+    function mostrarMensagemLigante(tipo, texto) {
+      if (!mensagemLigante) return;
+
+      const icone = tipo === "erro" ? "⚠️" : tipo === "sucesso" ? "✅" : "ℹ️";
+
+      mensagemLigante.classList.remove("is-error", "is-success", "visible");
+      mensagemLigante.innerHTML = `<span class="msg-icon">${icone}</span><span>${texto}</span>`;
+
+      if (tipo === "erro") {
+        mensagemLigante.classList.add("is-error");
+      } else if (tipo === "sucesso") {
+        mensagemLigante.classList.add("is-success");
+      }
+
+      // Reinicia transição
+      mensagemLigante.offsetHeight;
+      mensagemLigante.classList.add("visible");
+    }
+
+    function revelarConteudoLigante(ativo) {
+      if (!conteudoLigante) return;
+
+      if (ativo) {
+        conteudoLigante.classList.remove("oculto");
+        requestAnimationFrame(() => conteudoLigante.classList.add("revelado"));
+      } else {
+        conteudoLigante.classList.add("oculto");
+        conteudoLigante.classList.remove("revelado");
+      }
+    }
 
     function atualizarEstadoLigante() {
       if (!conteudoLigante || !mensagemLigante) return;
 
       if (liganteDesbloqueado) {
-        conteudoLigante.classList.remove("oculto");
-        mensagemLigante.textContent = "Acesso liberado. Você está vendo a área restrita para ligantes.";
+        revelarConteudoLigante(true);
+        mostrarMensagemLigante("sucesso", "Acesso liberado. Você está vendo a área restrita para ligantes.");
       } else {
-        conteudoLigante.classList.add("oculto");
-        mensagemLigante.textContent = "Apenas ligantes autorizados podem acessar os casos restritos.";
+        revelarConteudoLigante(false);
+        mostrarMensagemLigante("info", "Apenas ligantes autorizados podem acessar os casos restritos.");
       }
+    }
+
+    function renderCasosAvancados(lista) {
+      if (!ligaCasesGrid) return;
+      ligaCasesGrid.innerHTML = "";
+
+      lista.forEach((caso) => {
+        const card = document.createElement("article");
+        card.className = "advanced-card";
+        card.innerHTML = `
+          <div class="advanced-card__header">
+            <p class="advanced-card__title">${caso.nome}</p>
+            <span class="advanced-card__nivel">${caso.nivel}</span>
+          </div>
+          <div class="advanced-card__tags">
+            ${caso.tags.map((tag) => `<span class="advanced-card__tag">${tag}</span>`).join("")}
+          </div>
+        `;
+
+        const iniciarBtn = document.createElement("button");
+        iniciarBtn.className = "btn-primary";
+        iniciarBtn.type = "button";
+        iniciarBtn.innerHTML = '<i class="fa-solid fa-play"></i><span>Iniciar caso</span>';
+
+        iniciarBtn.addEventListener("click", () => {
+          mostrarMensagemLigante("sucesso", `Iniciando ${caso.nome} (${caso.nivel}).`);
+        });
+
+        card.appendChild(iniciarBtn);
+        ligaCasesGrid.appendChild(card);
+      });
+    }
+
+    if (btnRefreshCasos) {
+      btnRefreshCasos.addEventListener("click", () => {
+        const listaMisturada = [...casosAvancados].sort(() => Math.random() - 0.5);
+        renderCasosAvancados(listaMisturada);
+        mostrarMensagemLigante("info", "Lista de casos atualizada.");
+      });
     }
 
     if (btnLoginLigante && inputSenhaLigante) {
@@ -339,10 +492,11 @@
         if (inputSenhaLigante.value === SENHA_LIGANTE) {
           liganteDesbloqueado = true;
           atualizarEstadoLigante();
+          renderCasosAvancados(casosAvancados);
         } else {
           liganteDesbloqueado = false;
           atualizarEstadoLigante();
-          window.alert("Senha incorreta.");
+          mostrarMensagemLigante("erro", "Senha incorreta. Tente novamente.");
         }
       });
 
@@ -353,6 +507,39 @@
         }
       });
     }
+
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+    const themeToggle = document.getElementById("theme-toggle");
+
+    function aplicarTema(tema) {
+      document.body.dataset.theme = tema;
+      localStorage.setItem("theme", tema);
+      if (themeToggle) {
+        themeToggle.innerHTML = tema === "dark" ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+        themeToggle.setAttribute(
+          "aria-label",
+          tema === "dark" ? "Alternar para modo claro" : "Alternar para modo escuro"
+        );
+      }
+    }
+
+    const temaSalvo = localStorage.getItem("theme");
+    const temaInicial = temaSalvo || (prefersDark.matches ? "dark" : "light");
+    aplicarTema(temaInicial);
+
+    if (themeToggle) {
+      themeToggle.addEventListener("click", () => {
+        const proximoTema = document.body.dataset.theme === "dark" ? "light" : "dark";
+        aplicarTema(proximoTema);
+      });
+    }
+
+    prefersDark.addEventListener("change", (event) => {
+      const preferencia = event.matches ? "dark" : "light";
+      if (!localStorage.getItem("theme")) {
+        aplicarTema(preferencia);
+      }
+    });
 
     // Chamar ao carregar a página para garantir estado inicial
     atualizarEstadoLigante();
