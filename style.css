@@ -48,6 +48,7 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   transition: background 260ms ease, color 260ms ease;
+  padding: clamp(1.25rem, 3vw, 2.75rem);
 }
 
 /* Top bar */
