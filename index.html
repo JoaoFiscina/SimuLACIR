@@ -396,24 +396,28 @@
       limparFeedbackEtapa();
 
       if (etapaAtual.tipo === "info") {
-        if (alternativasListaEl) {
-          alternativasListaEl.innerHTML = `
-            <li class="info-etapa">
-              <p>${etapaAtual.texto || etapaAtual.descricao || ""}</p>
-              <button id="btn-continuar" class="btn-primary" type="button">Continuar</button>
-            </li>
-          `;
+        const proximaId = obterProximaEtapaId(etapaAtual);
 
-          const continuarBtn = document.getElementById("btn-continuar");
-          if (continuarBtn) {
-            continuarBtn.onclick = () => {
-              const proximaId = obterProximaEtapaId(etapaAtual);
-              if (proximaId) {
-                etapaAtualId = proximaId;
-                renderizarEtapaAtual();
-              }
-            };
-          }
+        if (enunciadoEtapaEl) {
+          enunciadoEtapaEl.textContent = etapaAtual.texto || etapaAtual.descricao || "";
+        }
+
+        if (alternativasListaEl) {
+          alternativasListaEl.innerHTML = "";
+
+          const btn = document.createElement("button");
+          btn.className = "btn-primary";
+          btn.type = "button";
+          btn.textContent = "Continuar";
+
+          btn.onclick = () => {
+            if (proximaId) {
+              etapaAtualId = proximaId;
+              renderizarEtapaAtual();
+            }
+          };
+
+          alternativasListaEl.appendChild(btn);
         }
 
         return;
