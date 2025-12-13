@@ -285,6 +285,14 @@
           throw new Error(`A etapa ${indice + 1} precisa ter 'id' e 'tipo'.`);
         }
 
+        // Normalizar texto
+        etapa.texto = etapa.texto || etapa.enunciado || etapa.descricao || "";
+
+        // Normalizar alternativas
+        if (Array.isArray(etapa.opcoes) && !Array.isArray(etapa.alternativas)) {
+          etapa.alternativas = etapa.opcoes;
+        }
+
         if (!Array.isArray(etapa.alternativas)) {
           etapa.alternativas = [];
         }
@@ -390,10 +398,59 @@
       }
 
       if (enunciadoEtapaEl) {
-        enunciadoEtapaEl.textContent = etapaAtual.enunciado || etapaAtual.titulo || "";
+        enunciadoEtapaEl.textContent = etapaAtual.texto || etapaAtual.enunciado || etapaAtual.titulo || "";
       }
 
       limparFeedbackEtapa();
+
+      if (etapaAtual.tipo === "pergunta") {
+        if (enunciadoEtapaEl) {
+          enunciadoEtapaEl.textContent = etapaAtual.texto;
+        }
+
+        if (!alternativasListaEl) return;
+        alternativasListaEl.innerHTML = "";
+
+        etapaAtual.alternativas.forEach((alt) => {
+          const li = document.createElement("li");
+          const btn = document.createElement("button");
+
+          btn.className = "opcao-btn";
+          btn.textContent = `${alt.id || ""} ${alt.texto || alt.descricao || ""}`;
+
+          btn.onclick = () => {
+            // feedback
+            if (feedbackEtapaEl) {
+              feedbackEtapaEl.textContent = alt.feedback || "";
+            }
+
+            // destacar correta/incorreta
+            if (alt.correta) {
+              btn.classList.add("correta");
+            } else {
+              btn.classList.add("errada");
+            }
+
+            // bloquear outras opções
+            document.querySelectorAll(".opcao-btn").forEach((b) => (b.disabled = true));
+
+            // preparar avanço
+            const prox = alt.proximaEtapaId || etapaAtual.proximaEtapaId;
+            if (prox && proximaEtapaBtn) {
+              proximaEtapaBtn.dataset.proximaId = prox;
+              proximaEtapaBtn.style.display = "inline-flex";
+            } else if (prox) {
+              etapaAtualId = prox;
+              renderizarEtapaAtual();
+            }
+          };
+
+          li.appendChild(btn);
+          alternativasListaEl.appendChild(li);
+        });
+
+        return;
+      }
 
       if (etapaAtual.tipo === "info") {
         if (alternativasListaEl) {
