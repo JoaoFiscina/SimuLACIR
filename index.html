@@ -80,33 +80,36 @@
     </section>
 
     <section id="tab-casos" class="tab-section">
-      <!-- CASO DEMONSTRATIVO -->
       <section id="caso-demo" class="section">
         <h2>Casos clínicos</h2>
         <p class="section-subtitle">
-          Selecione um caso na lista e responda às alternativas. Por enquanto há apenas um caso de exemplo.
+          Carregue um caso pela aba Upload, visualize-o aqui e clique para iniciar a simulação.
         </p>
 
         <div class="case-layout">
           <aside class="case-list">
             <h4>Casos disponíveis</h4>
-            <ul id="lista-casos"></ul>
+            <div id="lista-casos-avancados">
+              <p class="lista-vazia">Nenhum caso carregado. Use a aba Upload.</p>
+            </div>
           </aside>
 
-          <div class="case-card">
-            <h3 id="titulo-caso">Título do caso</h3>
-            <p id="enunciado"></p>
+          <div class="case-card" id="simulador-avancado" style="display: none">
+            <h3 id="titulo-caso-avancado">Selecione um caso para iniciar</h3>
+            <p id="descricao-caso-avancado">Aguardando caso carregado via Upload.</p>
 
-            <ul class="opcoes-lista">
-              <li><button class="opcao-btn" data-alt="a"></button></li>
-              <li><button class="opcao-btn" data-alt="b"></button></li>
-              <li><button class="opcao-btn" data-alt="c"></button></li>
-              <li><button class="opcao-btn" data-alt="d"></button></li>
-            </ul>
+            <div class="etapa-bloco">
+              <p id="enunciado-etapa"></p>
+              <ul id="alternativas-lista" class="opcoes-lista"></ul>
+            </div>
 
-            <div id="resultado" class="resultado">
+            <div id="feedback-etapa" class="resultado">
               <p>Escolha uma alternativa para ver o feedback.</p>
             </div>
+
+            <button id="proxima-etapa-btn" class="btn-primary" type="button" style="display: none">
+              Próxima etapa
+            </button>
           </div>
         </div>
       </section>
@@ -189,18 +192,9 @@
     <section id="tab-upload" class="tab-section">
       <h2>Upload de casos clínicos</h2>
       <p>
-        Aqui você poderá carregar casos clínicos em formato JSON compatível com o SimuLACIR.
-        O caso será lido pelo navegador e adicionado temporariamente à lista de casos disponíveis
-        para simulação nesta sessão.
+        Carregue casos clínicos em formato JSON compatível com o SimuLACIR. O arquivo é lido pelo navegador e o caso fica
+        disponível imediatamente na aba Casos, sem necessidade de backend.
       </p>
-      <p>
-        No futuro:
-      </p>
-      <ul>
-        <li>Casos oficiais da LACIR serão carregados a partir de arquivos JSON armazenados no GitHub;</li>
-        <li>Participantes das sessões poderão trazer seus próprios arquivos de caso para rodar no simulador;</li>
-        <li>A Área da Liga exibirá casos com nível de acesso restrito (&quot;liga&quot; ou &quot;seletivo&quot;).</li>
-      </ul>
 
       <h3>1. Baixe o modelo de caso</h3>
       <p>
@@ -210,17 +204,17 @@
         <a href="docs/caso-modelo-avancado.json" download>Baixar modelo de caso avançado (JSON)</a>
       </p>
 
-      <h3>2. (Em desenvolvimento) Carregar um arquivo de caso</h3>
+      <h3>2. Carregue um arquivo de caso</h3>
       <p>
-        Em uma próxima versão, você poderá selecionar um arquivo JSON de caso e o simulador irá
-        adicioná-lo automaticamente à lista de casos, sem necessidade de backend.
+        O arquivo será validado e adicionado à lista de casos para ser iniciado na aba Casos. A simulação só começa quando
+        você clicar em "Iniciar simulação" na lista.
       </p>
 
       <div class="upload-box">
         <label for="arquivo-caso-avancado">Selecione um arquivo de caso avançado (.json):</label>
         <input type="file" id="arquivo-caso-avancado" accept=".json,application/json">
         <button id="btn-carregar-caso-avancado" type="button" class="btn-primary">
-          Rodar simulação com este caso
+          Adicionar caso à lista
         </button>
         <p id="upload-estado" aria-live="polite"></p>
       </div>
@@ -252,132 +246,200 @@
         }
       });
     });
-    // Base de dados dos casos (por enquanto, apenas 1 caso)
-    const casos = [
-      {
-        id: "dor-toracica",
-        titulo: "Paciente com dor torácica",
-        especialidade: "urgência / cardiologia",
-        dificuldade: "médio",
-        fonte: "oficial",
-        nivelAcesso: "publico",
-        tags: ["dor torácica", "SCA", "urgência", "pronto-atendimento"],
-        enunciado:
-          "Homem, 58 anos, hipertenso, tabagista, procura o pronto-atendimento por dor torácica em aperto iniciada há cerca de 2 horas, irradiando para o braço esquerdo, associada a sudorese fria e náuseas. Ao exame: PA 150/90 mmHg, FC 100 bpm, saturação 94% em ar ambiente. Não há sinais de instabilidade hemodinâmica importante. Qual a melhor conduta imediata?",
-        alternativas: {
-          a: "Prescrever AINE para dor muscular e orientar retorno se piorar.",
-          b: "Encaminhar imediatamente para sala de emergência, realizar ECG e iniciar manejo de síndrome coronariana aguda.",
-          c: "Solicitar teste ergométrico ambulatorial e dar alta, pois está estável.",
-          d: "Solicitar apenas radiografia de tórax e aguardar o resultado para decidir."
-        },
-        correta: "b",
-        explicacoes: {
-          a: "Inadequado: quadro típico de dor torácica isquêmica em paciente de alto risco. Tratar como dor muscular e apenas prescrever AINE atrasa o diagnóstico de síndrome coronariana aguda.",
-          b: "Correto: trata-se de dor torácica com características típicas, em paciente com fatores de risco cardiovasculares. A conduta é encaminhar para sala de emergência, monitorizar, realizar ECG e exames iniciais, e iniciar manejo de síndrome coronariana aguda conforme protocolos.",
-          c: "Inadequado: teste ergométrico ambulatorial não é indicado como primeira abordagem em paciente com dor torácica típica em evolução. Primeiro, é obrigatório excluir/confirmar síndrome coronariana aguda.",
-          d: "Inadequado: embora RX de tórax possa ser útil em contexto de dor torácica, não é o exame inicial prioritário diante de forte suspeita de síndrome coronariana aguda. ECG e manejo imediato são prioritários."
-        },
-        exames: {
-          laboratoriais: [],
-          imagem: []
-        }
-      }
-    ];
-
-    let indiceCasoAtual = 0;
-
-    // Variáveis globais do motor avançado
-    let casoAvancado = null;
+    // Estado global dos casos avançados
+    let casosAvancados = [];
+    let casoAvancadoAtual = null;
     let etapaAtualId = null;
 
-    // Referências aos elementos da interface
-    const listaCasosEl = document.getElementById("lista-casos");
-    const tituloCasoEl = document.getElementById("titulo-caso");
-    const enunciadoEl = document.getElementById("enunciado");
-    const botoesOpcoes = document.querySelectorAll(".opcao-btn");
-    const resultadoDiv = document.getElementById("resultado");
+    // Referências aos elementos da aba "Casos"
+    const listaCasosAvancadosEl = document.getElementById("lista-casos-avancados");
+    const simuladorAvancadoEl = document.getElementById("simulador-avancado");
+    const tituloCasoAvancadoEl = document.getElementById("titulo-caso-avancado");
+    const descricaoCasoAvancadoEl = document.getElementById("descricao-caso-avancado");
+    const enunciadoEtapaEl = document.getElementById("enunciado-etapa");
+    const alternativasListaEl = document.getElementById("alternativas-lista");
+    const feedbackEtapaEl = document.getElementById("feedback-etapa");
+    const proximaEtapaBtn = document.getElementById("proxima-etapa-btn");
 
-    // Monta a lista de casos a partir do array "casos"
-    if (listaCasosEl) {
-      casos.forEach((caso, indice) => {
-        const li = document.createElement("li");
-        const btn = document.createElement("button");
-        btn.textContent = `Caso ${indice + 1} – ${caso.titulo}`;
-        btn.classList.add("case-list-btn");
-        if (indice === 0) {
-          btn.classList.add("active");
+    // Validações básicas do caso avançado
+    function validarCasoAvancado(caso) {
+      if (!caso) {
+        throw new Error("O caso avançado não foi fornecido.");
+      }
+
+      // Aceita o formato legado com propriedade 'fluxo'
+      if (!caso.etapas && Array.isArray(caso.fluxo)) {
+        caso.etapas = caso.fluxo.map((etapa, indice) => ({
+          ...etapa,
+          id: etapa.id || etapa.etapa || `etapa-${indice + 1}`,
+          tipo: etapa.tipo || "alternativas",
+        }));
+      }
+
+      if (!Array.isArray(caso.etapas)) {
+        throw new Error("O arquivo de caso avançado deve conter uma lista 'etapas'.");
+      }
+
+      caso.etapas.forEach((etapa, indice) => {
+        if (!etapa || !etapa.id || !etapa.tipo) {
+          throw new Error(`A etapa ${indice + 1} precisa ter 'id' e 'tipo'.`);
         }
-        btn.dataset.indice = indice.toString();
-        li.appendChild(btn);
-        listaCasosEl.appendChild(li);
+
+        if (!Array.isArray(etapa.alternativas)) {
+          etapa.alternativas = [];
+        }
       });
+
+      if (!caso.etapaInicialId && caso.etapas[0]) {
+        caso.etapaInicialId = caso.etapas[0].id;
+      }
     }
 
-    // Função para carregar um caso no card
-    function carregarCaso(indice) {
-      indiceCasoAtual = indice;
-      const caso = casos[indiceCasoAtual];
+    function registrarCasoAvancado(jsonCaso) {
+      validarCasoAvancado(jsonCaso);
+      casosAvancados.push(jsonCaso);
+      atualizarListaDeCasos();
+    }
 
-      if (!tituloCasoEl || !enunciadoEl || !resultadoDiv) {
-        console.error("Elementos do caso clínico não encontrados no HTML.");
+    function atualizarListaDeCasos() {
+      if (!listaCasosAvancadosEl) return;
+
+      listaCasosAvancadosEl.innerHTML = "";
+
+      if (casosAvancados.length === 0) {
+        const vazio = document.createElement("p");
+        vazio.className = "lista-vazia";
+        vazio.textContent = "Nenhum caso carregado. Use a aba Upload.";
+        listaCasosAvancadosEl.appendChild(vazio);
         return;
       }
 
-      tituloCasoEl.textContent = caso.titulo;
-      enunciadoEl.textContent = caso.enunciado;
+      casosAvancados.forEach((caso, index) => {
+        const card = document.createElement("div");
+        card.className = "caso-card";
+        card.innerHTML = `
+          <h3>${caso.titulo || "Caso sem título"}</h3>
+          <p>${caso.descricao || caso.contexto || ""}</p>
+          <button type="button">Iniciar simulação</button>
+        `;
 
-      botoesOpcoes.forEach((btn) => {
-        const alt = btn.dataset.alt; // "a", "b", "c", "d"
-        btn.classList.remove("correta", "errada");
-        if (alt && caso.alternativas[alt]) {
-          btn.textContent = `${alt}) ${caso.alternativas[alt]}`;
+        card.querySelector("button").onclick = () => iniciarCasoAvancado(index);
+        listaCasosAvancadosEl.appendChild(card);
+      });
+    }
+
+    function iniciarCasoAvancado(index) {
+      casoAvancadoAtual = casosAvancados[index];
+      etapaAtualId = casoAvancadoAtual.etapaInicialId;
+
+      if (simuladorAvancadoEl) {
+        simuladorAvancadoEl.style.display = "block";
+      }
+
+      renderizarEtapaAtual();
+    }
+
+    function obterEtapaAtual() {
+      return casoAvancadoAtual?.etapas.find((etapa) => etapa.id === etapaAtualId) || null;
+    }
+
+    function limparFeedbackEtapa() {
+      if (feedbackEtapaEl) {
+        feedbackEtapaEl.textContent = "Escolha uma alternativa para ver o feedback.";
+      }
+
+      if (proximaEtapaBtn) {
+        proximaEtapaBtn.style.display = "none";
+        proximaEtapaBtn.dataset.proximaId = "";
+      }
+    }
+
+    function obterProximaEtapaId(etapa, alternativaSelecionada) {
+      if (alternativaSelecionada?.proximaEtapaId) return alternativaSelecionada.proximaEtapaId;
+      if (etapa?.proximaEtapaId) return etapa.proximaEtapaId;
+
+      if (!casoAvancadoAtual) return null;
+      const indiceAtual = casoAvancadoAtual.etapas.findIndex((item) => item.id === etapa?.id);
+      return casoAvancadoAtual.etapas[indiceAtual + 1]?.id || null;
+    }
+
+    function renderizarEtapaAtual() {
+      if (!casoAvancadoAtual || !simuladorAvancadoEl) {
+        return;
+      }
+
+      const etapaAtual = obterEtapaAtual();
+
+      if (!etapaAtual) {
+        if (feedbackEtapaEl) {
+          feedbackEtapaEl.textContent = "Simulação concluída.";
+        }
+        if (alternativasListaEl) {
+          alternativasListaEl.innerHTML = "";
+        }
+        return;
+      }
+
+      if (tituloCasoAvancadoEl) {
+        tituloCasoAvancadoEl.textContent = casoAvancadoAtual.titulo || "Caso clínico";
+      }
+
+      if (descricaoCasoAvancadoEl) {
+        descricaoCasoAvancadoEl.textContent =
+          casoAvancadoAtual.descricao || casoAvancadoAtual.contexto || "Caso carregado via Upload.";
+      }
+
+      if (enunciadoEtapaEl) {
+        enunciadoEtapaEl.textContent = etapaAtual.enunciado || etapaAtual.titulo || "";
+      }
+
+      limparFeedbackEtapa();
+
+      if (alternativasListaEl) {
+        alternativasListaEl.innerHTML = "";
+
+        etapaAtual.alternativas.forEach((alternativa) => {
+          const item = document.createElement("li");
+          const btn = document.createElement("button");
+          btn.className = "opcao-btn";
+          btn.textContent = `${alternativa.id || ""}) ${alternativa.texto || alternativa.descricao || "Opção"}`;
+
+          btn.addEventListener("click", () => {
+            const proximaId = obterProximaEtapaId(etapaAtual, alternativa);
+
+            if (feedbackEtapaEl) {
+              feedbackEtapaEl.textContent = alternativa.feedback || "Sem feedback disponível para esta alternativa.";
+            }
+
+            if (proximaEtapaBtn) {
+              if (proximaId) {
+                proximaEtapaBtn.dataset.proximaId = proximaId;
+                proximaEtapaBtn.style.display = "inline-flex";
+              } else {
+                proximaEtapaBtn.style.display = "none";
+              }
+            }
+
+            if (proximaId && !proximaEtapaBtn) {
+              etapaAtualId = proximaId;
+              renderizarEtapaAtual();
+            }
+          });
+
+          item.appendChild(btn);
+          alternativasListaEl.appendChild(item);
+        });
+      }
+    }
+
+    if (proximaEtapaBtn) {
+      proximaEtapaBtn.addEventListener("click", () => {
+        const proximaId = proximaEtapaBtn.dataset.proximaId;
+        if (proximaId) {
+          etapaAtualId = proximaId;
+          renderizarEtapaAtual();
         }
       });
-
-      resultadoDiv.innerHTML = "<p>Escolha uma alternativa para ver o feedback.</p>";
-    }
-
-    // Eventos de clique na lista de casos
-    if (listaCasosEl) {
-      const botoesLista = listaCasosEl.querySelectorAll(".case-list-btn");
-      botoesLista.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const indice = parseInt(btn.dataset.indice || "0", 10);
-
-          botoesLista.forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-
-          carregarCaso(indice);
-        });
-      });
-    }
-
-    // Eventos de clique nas alternativas
-    botoesOpcoes.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const alt = btn.dataset.alt;
-        const caso = casos[indiceCasoAtual];
-
-        if (!alt || !caso) return;
-
-        const correta = caso.correta === alt;
-
-        botoesOpcoes.forEach((b) => b.classList.remove("correta", "errada"));
-        btn.classList.add(correta ? "correta" : "errada");
-
-        resultadoDiv.innerHTML = `
-          <p><strong>Você escolheu: (${alt})</strong></p>
-          <p class="${correta ? "texto-correto" : "texto-errado"}">
-            ${correta ? "✅ Resposta correta." : "❌ Resposta incorreta."}
-          </p>
-          <p>${caso.explicacoes[alt]}</p>
-        `;
-      });
-    });
-
-    // Inicializa com o primeiro caso
-    if (casos.length > 0) {
-      carregarCaso(0);
     }
 
     const SENHA_LIGANTE = "simulacir2025"; // senha padrão por enquanto
@@ -390,7 +452,7 @@
     const ligaCasesGrid = document.getElementById("liga-cases-grid");
     const btnRefreshCasos = document.getElementById("liga-refresh");
 
-    const casosAvancados = [
+    const casosAvancadosLiga = [
       {
         nome: "Trauma abdominal avançado",
         nivel: "ligante",
@@ -489,7 +551,7 @@
 
     if (btnRefreshCasos) {
       btnRefreshCasos.addEventListener("click", () => {
-        const listaMisturada = [...casosAvancados].sort(() => Math.random() - 0.5);
+        const listaMisturada = [...casosAvancadosLiga].sort(() => Math.random() - 0.5);
         renderCasosAvancados(listaMisturada);
         mostrarMensagemLigante("info", "Lista de casos atualizada.");
       });
@@ -500,7 +562,7 @@
         if (inputSenhaLigante.value === SENHA_LIGANTE) {
           liganteDesbloqueado = true;
           atualizarEstadoLigante();
-          renderCasosAvancados(casosAvancados);
+          renderCasosAvancados(casosAvancadosLiga);
         } else {
           liganteDesbloqueado = false;
           atualizarEstadoLigante();
@@ -516,45 +578,6 @@
       });
     }
 
-    // Validações básicas do caso avançado
-    function validarCasoAvancado(caso) {
-      if (!caso) {
-        throw new Error("O caso avançado não foi fornecido.");
-      }
-
-      // Aceita o formato legado com propriedade 'fluxo'
-      if (!caso.etapas && Array.isArray(caso.fluxo)) {
-        caso.etapas = caso.fluxo.map((etapa, indice) => ({
-          ...etapa,
-          id: etapa.id || etapa.etapa || `etapa-${indice + 1}`,
-          tipo: etapa.tipo || "alternativas",
-        }));
-      }
-
-      if (!Array.isArray(caso.etapas)) {
-        throw new Error("O arquivo de caso avançado deve conter uma lista 'etapas'.");
-      }
-
-      caso.etapas.forEach((etapa, indice) => {
-        if (!etapa || !etapa.id || !etapa.tipo) {
-          throw new Error(`A etapa ${indice + 1} precisa ter 'id' e 'tipo'.`);
-        }
-      });
-    }
-
-    function carregarCasoAvancadoDeObjeto(jsonCaso) {
-      validarCasoAvancado(jsonCaso);
-
-      casoAvancado = jsonCaso;
-      etapaAtualId = jsonCaso.etapaInicialId || (jsonCaso.etapas[0] ? jsonCaso.etapas[0].id : null);
-
-      if (typeof renderizarEtapaAtual === "function") {
-        renderizarEtapaAtual();
-      } else {
-        console.warn("Função renderizarEtapaAtual não encontrada para o caso avançado.");
-      }
-    }
-
     const inputCasoAvancado = document.getElementById("arquivo-caso-avancado");
     const btnCarregarCasoAvancado = document.getElementById("btn-carregar-caso-avancado");
     const uploadEstado = document.getElementById("upload-estado");
@@ -568,7 +591,7 @@
         uploadEstado.style.color = "";
 
         if (!arquivo) {
-          uploadEstado.textContent = "Selecione um arquivo JSON para iniciar a simulação.";
+          uploadEstado.textContent = "Selecione um arquivo JSON para carregar um caso.";
           uploadEstado.style.color = "#b91c1c";
           return;
         }
@@ -579,11 +602,11 @@
           try {
             const conteudo = reader.result ? reader.result.toString() : "";
             const jsonCaso = JSON.parse(conteudo);
-            carregarCasoAvancadoDeObjeto(jsonCaso);
+            registrarCasoAvancado(jsonCaso);
 
             const tituloMensagem = jsonCaso.titulo || arquivo.name;
             uploadEstado.style.color = "#15803d";
-            uploadEstado.textContent = `✅ Caso "${tituloMensagem}" carregado com sucesso. A simulação foi iniciada.`;
+            uploadEstado.textContent = `✅ Caso "${tituloMensagem}" carregado e disponível na aba Casos.`;
           } catch (erro) {
             console.error(erro);
             uploadEstado.style.color = "#b91c1c";
