@@ -216,10 +216,14 @@
         adicioná-lo automaticamente à lista de casos, sem necessidade de backend.
       </p>
 
-      <!-- Placeholder para o futuro input de arquivo -->
-      <!--
-      <input type="file" id="uploadCasoInput" accept=".json">
-      -->
+      <div class="upload-box">
+        <label for="arquivo-caso-avancado">Selecione um arquivo de caso avançado (.json):</label>
+        <input type="file" id="arquivo-caso-avancado" accept=".json,application/json">
+        <button id="btn-carregar-caso-avancado" type="button" class="btn-primary">
+          Rodar simulação com este caso
+        </button>
+        <p id="upload-estado" aria-live="polite"></p>
+      </div>
     </section>
   </main>
 
@@ -281,6 +285,10 @@
     ];
 
     let indiceCasoAtual = 0;
+
+    // Variáveis globais do motor avançado
+    let casoAvancado = null;
+    let etapaAtualId = null;
 
     // Referências aos elementos da interface
     const listaCasosEl = document.getElementById("lista-casos");
@@ -505,6 +513,90 @@
         if (event.key === "Enter") {
           btnLoginLigante.click();
         }
+      });
+    }
+
+    // Validações básicas do caso avançado
+    function validarCasoAvancado(caso) {
+      if (!caso) {
+        throw new Error("O caso avançado não foi fornecido.");
+      }
+
+      // Aceita o formato legado com propriedade 'fluxo'
+      if (!caso.etapas && Array.isArray(caso.fluxo)) {
+        caso.etapas = caso.fluxo.map((etapa, indice) => ({
+          ...etapa,
+          id: etapa.id || etapa.etapa || `etapa-${indice + 1}`,
+          tipo: etapa.tipo || "alternativas",
+        }));
+      }
+
+      if (!Array.isArray(caso.etapas)) {
+        throw new Error("O arquivo de caso avançado deve conter uma lista 'etapas'.");
+      }
+
+      caso.etapas.forEach((etapa, indice) => {
+        if (!etapa || !etapa.id || !etapa.tipo) {
+          throw new Error(`A etapa ${indice + 1} precisa ter 'id' e 'tipo'.`);
+        }
+      });
+    }
+
+    function carregarCasoAvancadoDeObjeto(jsonCaso) {
+      validarCasoAvancado(jsonCaso);
+
+      casoAvancado = jsonCaso;
+      etapaAtualId = jsonCaso.etapaInicialId || (jsonCaso.etapas[0] ? jsonCaso.etapas[0].id : null);
+
+      if (typeof renderizarEtapaAtual === "function") {
+        renderizarEtapaAtual();
+      } else {
+        console.warn("Função renderizarEtapaAtual não encontrada para o caso avançado.");
+      }
+    }
+
+    const inputCasoAvancado = document.getElementById("arquivo-caso-avancado");
+    const btnCarregarCasoAvancado = document.getElementById("btn-carregar-caso-avancado");
+    const uploadEstado = document.getElementById("upload-estado");
+
+    // Carrega caso avançado a partir de arquivo JSON enviado pelo usuário
+    if (btnCarregarCasoAvancado && inputCasoAvancado && uploadEstado) {
+      btnCarregarCasoAvancado.addEventListener("click", () => {
+        const arquivo = inputCasoAvancado.files?.[0];
+
+        uploadEstado.textContent = "";
+        uploadEstado.style.color = "";
+
+        if (!arquivo) {
+          uploadEstado.textContent = "Selecione um arquivo JSON para iniciar a simulação.";
+          uploadEstado.style.color = "#b91c1c";
+          return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          try {
+            const conteudo = reader.result ? reader.result.toString() : "";
+            const jsonCaso = JSON.parse(conteudo);
+            carregarCasoAvancadoDeObjeto(jsonCaso);
+
+            const tituloMensagem = jsonCaso.titulo || arquivo.name;
+            uploadEstado.style.color = "#15803d";
+            uploadEstado.textContent = `✅ Caso "${tituloMensagem}" carregado com sucesso. A simulação foi iniciada.`;
+          } catch (erro) {
+            console.error(erro);
+            uploadEstado.style.color = "#b91c1c";
+            uploadEstado.textContent = `Erro ao carregar caso avançado: ${erro instanceof Error ? erro.message : "Conteúdo inválido."}`;
+          }
+        };
+
+        reader.onerror = () => {
+          uploadEstado.style.color = "#b91c1c";
+          uploadEstado.textContent = "Não foi possível ler o arquivo selecionado.";
+        };
+
+        reader.readAsText(arquivo, "utf-8");
       });
     }
 
