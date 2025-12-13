@@ -395,6 +395,30 @@
 
       limparFeedbackEtapa();
 
+      if (etapaAtual.tipo === "info") {
+        if (alternativasListaEl) {
+          alternativasListaEl.innerHTML = `
+            <li class="info-etapa">
+              <p>${etapaAtual.texto || etapaAtual.descricao || ""}</p>
+              <button id="btn-continuar" class="btn-primary" type="button">Continuar</button>
+            </li>
+          `;
+
+          const continuarBtn = document.getElementById("btn-continuar");
+          if (continuarBtn) {
+            continuarBtn.onclick = () => {
+              const proximaId = obterProximaEtapaId(etapaAtual);
+              if (proximaId) {
+                etapaAtualId = proximaId;
+                renderizarEtapaAtual();
+              }
+            };
+          }
+        }
+
+        return;
+      }
+
       if (alternativasListaEl) {
         alternativasListaEl.innerHTML = "";
 
