@@ -371,11 +371,17 @@
       const etapaAtual = obterEtapaAtual();
 
       if (!etapaAtual) {
-        if (feedbackEtapaEl) {
-          feedbackEtapaEl.textContent = "Simulação concluída.";
-        }
         if (alternativasListaEl) {
           alternativasListaEl.innerHTML = "";
+        }
+
+        if (feedbackEtapaEl) {
+          feedbackEtapaEl.textContent = "";
+        }
+
+        if (proximaEtapaBtn) {
+          proximaEtapaBtn.style.display = "none";
+          proximaEtapaBtn.dataset.proximaId = "";
         }
         return;
       }
