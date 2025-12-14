@@ -108,6 +108,13 @@
                 <p>Escolha uma alternativa para ver o feedback.</p>
               </div>
 
+            <div class="etapa-controles">
+              <button id="voltar-etapa-btn" class="btn-secondary" type="button" style="display: none">
+                Voltar etapa
+              </button>
+              <button id="proxima-etapa-btn" class="btn-primary" type="button" style="display: none">
+                Próxima etapa
+              </button>
               <div class="etapa-acoes">
                 <button id="proxima-etapa-btn" class="btn-primary" type="button" style="display: none">
                   Próxima etapa
@@ -254,6 +261,7 @@
     let casosAvancados = [];
     let casoAvancadoAtual = null;
     let etapaAtualId = null;
+    let historicoEtapas = [];
     let opcaoSelecionadaId = null;
     let feedbackVisivel = false;
     let podeAvancar = false;
@@ -266,7 +274,25 @@
     const enunciadoEtapaEl = document.getElementById("enunciado-etapa");
     const alternativasListaEl = document.getElementById("alternativas-lista");
     const feedbackEtapaEl = document.getElementById("feedback-etapa");
+    const voltarEtapaBtn = document.getElementById("voltar-etapa-btn");
     const proximaEtapaBtn = document.getElementById("proxima-etapa-btn");
+
+    function atualizarVisibilidadeBotaoVoltar() {
+      if (!voltarEtapaBtn) return;
+
+      voltarEtapaBtn.style.display = historicoEtapas.length > 0 ? "inline-flex" : "none";
+    }
+
+    function irParaEtapa(proximaId, registrarHistorico = true) {
+      if (!proximaId || proximaId === etapaAtualId) return;
+
+      if (registrarHistorico && etapaAtualId) {
+        historicoEtapas.push(etapaAtualId);
+      }
+
+      etapaAtualId = proximaId;
+      renderizarEtapaAtual();
+    }
 
     // Validações básicas do caso avançado
     function validarCasoAvancado(caso) {
@@ -346,6 +372,7 @@
     function iniciarCasoAvancado(index) {
       casoAvancadoAtual = casosAvancados[index];
       etapaAtualId = casoAvancadoAtual.etapaInicialId;
+      historicoEtapas = [];
 
       if (simuladorAvancadoEl) {
         simuladorAvancadoEl.style.display = "block";
@@ -387,6 +414,8 @@
       if (!casoAvancadoAtual || !simuladorAvancadoEl) {
         return;
       }
+
+      atualizarVisibilidadeBotaoVoltar();
 
       const etapaAtual = obterEtapaAtual();
 
@@ -492,8 +521,7 @@
 
           btn.onclick = () => {
             if (proximaId) {
-              etapaAtualId = proximaId;
-              renderizarEtapaAtual();
+              irParaEtapa(proximaId);
             }
           };
 
@@ -532,8 +560,7 @@
             }
 
             if (proximaId && !proximaEtapaBtn) {
-              etapaAtualId = proximaId;
-              renderizarEtapaAtual();
+              irParaEtapa(proximaId);
             }
           });
 
@@ -554,9 +581,7 @@
           const proximaId = proximaEtapaBtn.dataset.proximaId || etapaAtual.proximaEtapaId;
 
           if (proximaId) {
-            etapaAtualId = proximaId;
-            limparFeedbackEtapa();
-            renderizarEtapaAtual();
+            irParaEtapa(proximaId);
           }
 
           return;
@@ -564,9 +589,20 @@
 
         const proximaId = proximaEtapaBtn.dataset.proximaId;
         if (proximaId) {
-          etapaAtualId = proximaId;
-          renderizarEtapaAtual();
+          irParaEtapa(proximaId);
         }
+      });
+    }
+
+    if (voltarEtapaBtn) {
+      voltarEtapaBtn.addEventListener("click", () => {
+        const etapaAnteriorId = historicoEtapas.pop();
+
+        if (!etapaAnteriorId) return;
+
+        etapaAtualId = etapaAnteriorId;
+        limparFeedbackEtapa();
+        renderizarEtapaAtual();
       });
     }
 
