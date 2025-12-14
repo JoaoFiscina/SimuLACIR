@@ -250,6 +250,9 @@
     let casosAvancados = [];
     let casoAvancadoAtual = null;
     let etapaAtualId = null;
+    let opcaoSelecionadaId = null;
+    let feedbackVisivel = false;
+    let podeAvancar = false;
 
     // Referências aos elementos da aba "Casos"
     const listaCasosAvancadosEl = document.getElementById("lista-casos-avancados");
@@ -359,7 +362,12 @@
       if (proximaEtapaBtn) {
         proximaEtapaBtn.style.display = "none";
         proximaEtapaBtn.dataset.proximaId = "";
+        proximaEtapaBtn.disabled = true;
       }
+
+      opcaoSelecionadaId = null;
+      feedbackVisivel = false;
+      podeAvancar = false;
     }
 
     function obterProximaEtapaId(etapa, alternativaSelecionada) {
@@ -417,6 +425,12 @@
         if (!alternativasListaEl) return;
         alternativasListaEl.innerHTML = "";
 
+        if (proximaEtapaBtn) {
+          proximaEtapaBtn.textContent = "Confirmar decisão";
+          proximaEtapaBtn.style.display = "inline-flex";
+          proximaEtapaBtn.disabled = true;
+        }
+
         etapaAtual.alternativas.forEach((alt) => {
           const li = document.createElement("li");
           const btn = document.createElement("button");
@@ -425,29 +439,28 @@
           btn.textContent = `${alt.id || ""} ${alt.texto || alt.descricao || ""}`;
 
           btn.onclick = () => {
-            // feedback
+            document.querySelectorAll(".opcao-btn").forEach((b) => {
+              b.classList.remove("correta", "errada", "selecionada");
+            });
+
+            opcaoSelecionadaId = alt.id ?? null;
+            feedbackVisivel = true;
+
             if (feedbackEtapaEl) {
               feedbackEtapaEl.textContent = alt.feedback || "";
             }
 
-            // destacar correta/incorreta
+            btn.classList.add("selecionada");
             if (alt.correta) {
               btn.classList.add("correta");
             } else {
               btn.classList.add("errada");
             }
 
-            // bloquear outras opções
-            document.querySelectorAll(".opcao-btn").forEach((b) => (b.disabled = true));
-
-            // preparar avanço
             const prox = alt.proximaEtapaId || etapaAtual.proximaEtapaId;
-            if (prox && proximaEtapaBtn) {
-              proximaEtapaBtn.dataset.proximaId = prox;
-              proximaEtapaBtn.style.display = "inline-flex";
-            } else if (prox) {
-              etapaAtualId = prox;
-              renderizarEtapaAtual();
+            if (proximaEtapaBtn) {
+              proximaEtapaBtn.dataset.proximaId = prox || "";
+              proximaEtapaBtn.disabled = !opcaoSelecionadaId || !prox;
             }
           };
 
@@ -506,8 +519,11 @@
               if (proximaId) {
                 proximaEtapaBtn.dataset.proximaId = proximaId;
                 proximaEtapaBtn.style.display = "inline-flex";
+                proximaEtapaBtn.textContent = "Próxima etapa";
+                proximaEtapaBtn.disabled = false;
               } else {
                 proximaEtapaBtn.style.display = "none";
+                proximaEtapaBtn.disabled = true;
               }
             }
 
@@ -525,6 +541,23 @@
 
     if (proximaEtapaBtn) {
       proximaEtapaBtn.addEventListener("click", () => {
+        const etapaAtual = obterEtapaAtual();
+
+        if (etapaAtual?.tipo === "pergunta") {
+          if (!opcaoSelecionadaId) return;
+
+          podeAvancar = true;
+          const proximaId = proximaEtapaBtn.dataset.proximaId || etapaAtual.proximaEtapaId;
+
+          if (proximaId) {
+            etapaAtualId = proximaId;
+            limparFeedbackEtapa();
+            renderizarEtapaAtual();
+          }
+
+          return;
+        }
+
         const proximaId = proximaEtapaBtn.dataset.proximaId;
         if (proximaId) {
           etapaAtualId = proximaId;
