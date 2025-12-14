@@ -94,22 +94,26 @@
             </div>
           </aside>
 
-          <div class="case-card" id="simulador-avancado" style="display: none">
+          <div class="case-card etapa-card" id="simulador-avancado" style="display: none">
             <h3 id="titulo-caso-avancado">Selecione um caso para iniciar</h3>
             <p id="descricao-caso-avancado">Aguardando caso carregado via Upload.</p>
 
             <div class="etapa-bloco">
               <p id="enunciado-etapa"></p>
-              <ul id="alternativas-lista" class="opcoes-lista"></ul>
+              <ul id="alternativas-lista" class="opcoes-lista etapa-opcoes"></ul>
             </div>
 
-            <div id="feedback-etapa" class="resultado">
-              <p>Escolha uma alternativa para ver o feedback.</p>
-            </div>
+            <div class="etapa-controles">
+              <div id="feedback-etapa" class="resultado etapa-feedback">
+                <p>Escolha uma alternativa para ver o feedback.</p>
+              </div>
 
-            <button id="proxima-etapa-btn" class="btn-primary" type="button" style="display: none">
-              Próxima etapa
-            </button>
+              <div class="etapa-acoes">
+                <button id="proxima-etapa-btn" class="btn-primary" type="button" style="display: none">
+                  Próxima etapa
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
