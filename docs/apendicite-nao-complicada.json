@@ -1,0 +1,544 @@
+{
+  "id": "apendicite_nao_complicada_completa",
+  "titulo": "Apendicite Aguda Não Complicada — Completo (PS → Diagnóstico → Cirurgia → Pós-Operatório)",
+  "descricao": "Simulação completa de apendicite aguda não complicada em adulto jovem, cobrindo triagem, anamnese, exame físico, exames básicos, estratificação e imagem (Parte 1), seguida de antibioticoterapia perioperatória, conduta cirúrgica, pós-operatório, alta, sinais de alerta e erros frequentes (Parte 2).",
+  "etapaInicialId": "info_objetivo",
+  "etapas": [
+    {
+      "id": "info_objetivo",
+      "tipo": "info",
+      "titulo": "Objetivo do atendimento",
+      "texto": "Você está de plantão no pronto-socorro. Seu objetivo é reconhecer apendicite aguda com segurança, identificar precocemente formas complicadas e organizar um plano de exames e tratamento sem atrasos desnecessários.",
+      "proximaEtapaId": "info_caso_inicial"
+    },
+    {
+      "id": "info_caso_inicial",
+      "tipo": "info",
+      "titulo": "Apresentação inicial",
+      "texto": "Homem, 23 anos, previamente hígido. Dor abdominal há cerca de 12 horas, começou em região periumbilical e migrou para fossa ilíaca direita. Refere náusea, um episódio de vômito e perda de apetite. Relata febre baixa em casa.\n\nSinais vitais na chegada: temperatura 38,2 °C; FC 104 bpm; PA 118/72 mmHg; FR 18 irpm; SatO2 98% em ar ambiente.",
+      "proximaEtapaId": "pergunta_triagem"
+    },
+    {
+      "id": "pergunta_triagem",
+      "tipo": "pergunta",
+      "titulo": "Primeiros 5–10 minutos",
+      "texto": "Pensando na triagem inicial de um paciente potencialmente com abdome agudo inflamatório, qual é a melhor próxima conduta?",
+      "opcoes": [
+        {
+          "id": "A",
+          "texto": "Manter em dieta livre, observar em sala de espera por 6 horas e reavaliar depois.",
+          "correta": false,
+          "feedback": "Observar sem organizar medidas básicas e sem priorizar o caso pode atrasar diagnóstico e tratamento em abdome agudo."
+        },
+        {
+          "id": "B",
+          "texto": "Iniciar jejum, monitorização, acesso venoso, analgesia e antiemético, além de avaliação dirigida.",
+          "correta": true,
+          "feedback": "Organizar jejum, acesso, controle de dor e náusea desde o início prepara para eventual cirurgia ou imagem sem atrasar a investigação."
+        },
+        {
+          "id": "C",
+          "texto": "Solicitar colonoscopia de urgência para esclarecer a causa da dor.",
+          "correta": false,
+          "feedback": "Colonoscopia não é exame de escolha em abdome agudo com suspeita de apendicite; pode atrasar o manejo adequado."
+        },
+        {
+          "id": "D",
+          "texto": "Prescrever laxante para avaliar se a dor melhora e decidir depois.",
+          "correta": false,
+          "feedback": "Laxante em abdome agudo inflamatório é conduta perigosa e pode piorar sintomas e complicações."
+        }
+      ],
+      "explicacaoCorreta": "Na abordagem inicial, você precisa estabilizar, aliviar sintomas de forma segura e preparar o paciente para exames e eventual cirurgia, sem usar medidas que atrasem ou atrapalhem o diagnóstico.",
+      "proximaEtapaId": "info_anamnese"
+    },
+    {
+      "id": "info_anamnese",
+      "tipo": "info",
+      "titulo": "Anamnese dirigida",
+      "texto": "Você coleta uma história mais focada. O paciente confirma que a dor começou em região central do abdome e migrou para fossa ilíaca direita. Refere anorexia importante, náusea persistente e vômito após o início da dor. Nega diarreia intensa, sintomas urinários ou história de cirurgias abdominais prévias. Não há história de imunossupressão.\n\nVocê registra também que não há queixas ginecológicas (não aplicável neste caso).",
+      "proximaEtapaId": "pergunta_anamnese"
+    },
+    {
+      "id": "pergunta_anamnese",
+      "tipo": "pergunta",
+      "titulo": "Pontos-chave da anamnese",
+      "texto": "Considerando a história, qual combinação de dados mais reforça a hipótese de apendicite típica?",
+      "opcoes": [
+        {
+          "id": "A",
+          "texto": "Dor em cólica difusa com diarreia aquosa intensa.",
+          "correta": false,
+          "feedback": "Esse quadro lembra mais gastroenterite ou colite do que apendicite clássica."
+        },
+        {
+          "id": "B",
+          "texto": "Dor que começou periumbilical, migrou para fossa ilíaca direita, com anorexia e náusea.",
+          "correta": true,
+          "feedback": "Migração da dor para fossa ilíaca direita associada a anorexia e sintomas gastrointestinais é padrão clássico de apendicite aguda."
+        },
+        {
+          "id": "C",
+          "texto": "Dor em flanco com irradiação para região inguinal e hematúria importante.",
+          "correta": false,
+          "feedback": "Essa combinação sugere mais cólica renal ou doença urinária."
+        },
+        {
+          "id": "D",
+          "texto": "Dor epigástrica que melhora ao alimentar, sem febre ou náusea.",
+          "correta": false,
+          "feedback": "Dor que alivia com alimentação é mais compatível com dispepsia ou úlcera, não com abdome agudo inflamatório típico."
+        }
+      ],
+      "explicacaoCorreta": "O padrão migratório da dor somado à anorexia e sintomas gastrointestinais aumenta a probabilidade de apendicite, mas ainda não exclui outros diagnósticos.",
+      "proximaEtapaId": "info_exame_fisico"
+    },
+    {
+      "id": "info_exame_fisico",
+      "tipo": "info",
+      "titulo": "Exame físico abdominal",
+      "texto": "No exame abdominal, o paciente apresenta dor máxima em fossa ilíaca direita, defesa localizada e dor à descompressão brusca nessa região. Caminhar e tossir aumentam bastante o desconforto. Abdome sem distensão importante e sem sinais claros de peritonite difusa.",
+      "proximaEtapaId": "pergunta_exame_fisico"
+    },
+    {
+      "id": "pergunta_exame_fisico",
+      "tipo": "pergunta",
+      "titulo": "Interpretação do exame",
+      "texto": "Qual achado é mais consistente com irritação peritoneal localizada em fossa ilíaca direita?",
+      "opcoes": [
+        {
+          "id": "A",
+          "texto": "Aumento difuso dos ruídos hidroaéreos sem dor localizada.",
+          "correta": false,
+          "feedback": "Ruídos aumentados isoladamente não indicam irritação localizada do peritônio."
+        },
+        {
+          "id": "B",
+          "texto": "Dor à descompressão brusca em fossa ilíaca direita.",
+          "correta": true,
+          "feedback": "Dor à descompressão nessa região indica irritação peritoneal localizada, compatível com apendicite."
+        },
+        {
+          "id": "C",
+          "texto": "Sinal de Murphy positivo e icterícia.",
+          "correta": false,
+          "feedback": "Esse quadro é mais compatível com colecistite e doença hepatobiliar."
+        },
+        {
+          "id": "D",
+          "texto": "Dor epigástrica leve, melhora espontaneamente com o tempo.",
+          "correta": false,
+          "feedback": "Não corresponde ao padrão de irritação peritoneal localizada em fossa ilíaca direita."
+        }
+      ],
+      "explicacaoCorreta": "Irritação peritoneal localizada é um dos pilares para suspeitar de apendicite; em casos atípicos (idosos, gestantes, imunossuprimidos) o exame pode ser menos exuberante.",
+      "proximaEtapaId": "exames_basicos"
+    },
+    {
+      "id": "exames_basicos",
+      "tipo": "exames",
+      "titulo": "Exames laboratoriais básicos",
+      "texto": "Você decide solicitar exames laboratoriais iniciais para complementar a avaliação.",
+      "examesDisponiveis": [
+        {
+          "id": "hemograma",
+          "nome": "Hemograma completo",
+          "tipo": "laboratorio",
+          "resultado": "Leucócitos 14.800/mm³ com predomínio de neutrófilos.",
+          "custoSimulado": 2
+        },
+        {
+          "id": "pcr",
+          "nome": "Proteína C reativa",
+          "tipo": "laboratorio",
+          "resultado": "PCR 48 mg/L (elevada).",
+          "custoSimulado": 2
+        },
+        {
+          "id": "urina",
+          "nome": "Urina tipo I",
+          "tipo": "laboratorio",
+          "resultado": "Sem hematúria ou sinais de infecção urinária.",
+          "custoSimulado": 1
+        },
+        {
+          "id": "bhcg",
+          "nome": "β-hCG sérico",
+          "tipo": "laboratorio",
+          "resultado": "Não aplicável neste caso (sexo masculino), mas lembre-se: sempre considerar em pessoas com útero e potencial gestação.",
+          "custoSimulado": 1
+        }
+      ],
+      "proximaEtapaId": "pergunta_interpretacao_labs"
+    },
+    {
+      "id": "pergunta_interpretacao_labs",
+      "tipo": "pergunta",
+      "titulo": "Interpretação dos exames",
+      "texto": "Com base nesses resultados, como interpretar leucocitose e PCR elevada neste contexto clínico?",
+      "opcoes": [
+        {
+          "id": "A",
+          "texto": "Confirmam apendicite por si só; não há necessidade de imagem.",
+          "correta": false,
+          "feedback": "Marcadores inflamatórios apoiam o diagnóstico, mas são inespecíficos e não substituem avaliação clínica e imagem quando indicada."
+        },
+        {
+          "id": "B",
+          "texto": "Apoiariam um processo inflamatório, devendo ser integrados à história e exame para definir necessidade de imagem.",
+          "correta": true,
+          "feedback": "Leucocitose e PCR elevada aumentam a probabilidade de inflamação, mas precisam ser interpretadas junto ao quadro clínico."
+        },
+        {
+          "id": "C",
+          "texto": "São diagnósticos de pancreatite aguda obrigatoriamente.",
+          "correta": false,
+          "feedback": "Não há amilase/lipase alteradas e o quadro clínico não é típico de pancreatite."
+        },
+        {
+          "id": "D",
+          "texto": "Contraindicam analgesia até confirmação diagnóstica.",
+          "correta": false,
+          "feedback": "Analgesia não atrapalha o diagnóstico quando usada de forma adequada e é recomendada na abordagem moderna de abdome agudo."
+        }
+      ],
+      "explicacaoCorreta": "Marcadores inflamatórios ajudam, mas não definem sozinhos o diagnóstico; você deve somar dados e organizar o próximo passo de investigação.",
+      "proximaEtapaId": "pergunta_imagem"
+    },
+    {
+      "id": "pergunta_imagem",
+      "tipo": "pergunta",
+      "titulo": "Escolha de imagem",
+      "texto": "Considerando que se trata de um adulto jovem, não gestante, com função renal preservada e suspeita moderada/alta de apendicite, qual é a melhor opção de imagem neste cenário?",
+      "opcoes": [
+        {
+          "id": "A",
+          "texto": "Tomografia de abdome e pelve com contraste intravenoso.",
+          "correta": true,
+          "feedback": "Tomografia com contraste tem alta acurácia para confirmar apendicite, avaliar complicações e diagnósticos alternativos em adultos."
+        },
+        {
+          "id": "B",
+          "texto": "Ultrassom de tireoide.",
+          "correta": false,
+          "feedback": "Não está relacionado ao quadro de dor abdominal aguda."
+        },
+        {
+          "id": "C",
+          "texto": "Radiografia simples de abdome em apenas um plano.",
+          "correta": false,
+          "feedback": "Radiografia simples tem baixa utilidade para confirmação de apendicite não complicada."
+        },
+        {
+          "id": "D",
+          "texto": "Colonoscopia ambulatorial em outra data.",
+          "correta": false,
+          "feedback": "Não é exame de escolha para suspeita de apendicite aguda e atrasaria conduta."
+        }
+      ],
+      "explicacaoCorreta": "Em adultos, TC com contraste é frequentemente o exame padrão para suspeita de apendicite, equilibrando acurácia diagnóstica e avaliação de outras causas de dor.",
+      "proximaEtapaId": "info_achados_tc"
+    },
+    {
+      "id": "info_achados_tc",
+      "tipo": "info",
+      "titulo": "Imagem: apendicite não complicada",
+      "texto": "A tomografia mostra apêndice com diâmetro aumentado (cerca de 9 mm), parede espessada, estriações na gordura adjacente e ausência de abscesso, coleção ou pneumoperitônio. Não há sinais de peritonite difusa. Esses achados são compatíveis com apendicite aguda não complicada.",
+      "proximaEtapaId": "pergunta_classificacao"
+    },
+    {
+      "id": "pergunta_classificacao",
+      "tipo": "pergunta",
+      "titulo": "Classificação do caso",
+      "texto": "Com base nos achados de imagem e no quadro clínico, como classificar este caso?",
+      "opcoes": [
+        {
+          "id": "A",
+          "texto": "Apendicite complicada obrigatoriamente.",
+          "correta": false,
+          "feedback": "Complicada geralmente envolve perfuração, abscesso, peritonite difusa ou sepse, o que não é descrito aqui."
+        },
+        {
+          "id": "B",
+          "texto": "Apendicite aguda não complicada.",
+          "correta": true,
+          "feedback": "A ausência de abscesso, perfuração ou peritonite difusa é compatível com forma não complicada."
+        },
+        {
+          "id": "C",
+          "texto": "Sepse abdominal grave com necessidade de UTI imediata.",
+          "correta": false,
+          "feedback": "O quadro não mostra instabilidade hemodinâmica nem peritonite difusa para definir sepse grave neste momento."
+        },
+        {
+          "id": "D",
+          "texto": "Quadro funcional sem necessidade de conduta cirúrgica ou antibiótica.",
+          "correta": false,
+          "feedback": "O conjunto de dados clínicos e de imagem é compatível com inflamação real do apêndice, não apenas dor funcional."
+        }
+      ],
+      "explicacaoCorreta": "Distinguir não complicada de complicada é essencial para escolher entre cirurgia imediata, manejo conservador em casos selecionados e estratégias específicas para complicações.",
+      "proximaEtapaId": "pergunta_tratamento_inicial"
+    },
+    {
+      "id": "pergunta_tratamento_inicial",
+      "tipo": "pergunta",
+      "titulo": "Decisão terapêutica inicial",
+      "texto": "Diante de apendicite aguda não complicada em paciente jovem, estável e que deseja uma solução definitiva, qual é a melhor conduta principal?",
+      "opcoes": [
+        {
+          "id": "A",
+          "texto": "Apendicectomia laparoscópica em tempo oportuno.",
+          "correta": true,
+          "feedback": "Apendicectomia laparoscópica é o padrão clássico, com alta taxa de sucesso e recuperação rápida em muitos casos."
+        },
+        {
+          "id": "B",
+          "texto": "Alta apenas com analgésico e retorno se piorar, sem cirurgia nem antibiótico.",
+          "correta": false,
+          "feedback": "Liberação sem tratamento definitivo em um caso confirmado de apendicite pode levar a complicações e retorno grave."
+        },
+        {
+          "id": "C",
+          "texto": "Antibiótico prolongado por 14 dias para todos os pacientes, sem cirurgia.",
+          "correta": false,
+          "feedback": "Uso prolongado e indiscriminado de antibiótico aumenta riscos e não é indicado de rotina para todos os casos."
+        },
+        {
+          "id": "D",
+          "texto": "Colocar dreno peritoneal de rotina sem cirurgia.",
+          "correta": false,
+          "feedback": "Drenagem isolada sem controle adequado do foco não é uma estratégia terapêutica para apendicite não complicada."
+        }
+      ],
+      "explicacaoCorreta": "A cirurgia laparoscópica é o tratamento clássico; em alguns contextos, o uso inicial de antibiótico pode ser discutido, mas exige seleção criteriosa e decisão compartilhada.",
+      "proximaEtapaId": "info_retomada_parte2"
+    },
+
+    {
+      "id": "info_retomada_parte2",
+      "tipo": "info",
+      "titulo": "Retomada do caso (Parte 2)",
+      "texto": "Você já confirmou apendicite aguda não complicada em um paciente jovem, estável, com boa condição clínica. A estratégia escolhida foi apendicectomia laparoscópica. Agora, você precisa organizar antibioticoterapia, conduzir o pós-operatório e reconhecer possíveis complicações.",
+      "proximaEtapaId": "pergunta_profilaxia"
+    },
+    {
+      "id": "pergunta_profilaxia",
+      "tipo": "pergunta",
+      "titulo": "Antibioticoterapia perioperatória",
+      "texto": "Em apendicite não complicada operada, qual é a melhor estratégia para uso de antibiótico?",
+      "opcoes": [
+        {
+          "id": "A",
+          "texto": "Prescrever antibiótico terapêutico por 7–10 dias no pós-operatório para todos.",
+          "correta": false,
+          "feedback": "Manter antibiótico prolongado sem necessidade aumenta eventos adversos e resistência, sem melhorar desfechos na forma não complicada."
+        },
+        {
+          "id": "B",
+          "texto": "Administrar dose profilática pré-incisão com cobertura para flora intestinal, sem manter antibiótico de rotina no pós-operatório se o caso for não complicado.",
+          "correta": true,
+          "feedback": "O foco é profilaxia perioperatória; na apendicite não complicada operada, não há benefício em manter antibiótico prolongado."
+        },
+        {
+          "id": "C",
+          "texto": "Nunca usar antibiótico em nenhuma etapa do tratamento de apendicite.",
+          "correta": false,
+          "feedback": "Há cenários em que o uso é necessário, especialmente em formas complicadas ou como profilaxia cirúrgica."
+        },
+        {
+          "id": "D",
+          "texto": "Esperar aparecer febre no pós-operatório para só então iniciar qualquer antibiótico.",
+          "correta": false,
+          "feedback": "Profilaxia deve ser planejada; aguardar sinais tardios pode piorar desfechos."
+        }
+      ],
+      "explicacaoCorreta": "Em apendicite não complicada, costuma-se usar profilaxia perioperatória e evitar terapia prolongada, reservando antibioticoterapia terapêutica para situações complicadas.",
+      "proximaEtapaId": "pergunta_dreno"
+    },
+    {
+      "id": "pergunta_dreno",
+      "tipo": "pergunta",
+      "titulo": "Uso de dreno",
+      "texto": "Em relação ao uso de dreno após apendicectomia, qual afirmação é mais adequada segundo práticas atuais?",
+      "opcoes": [
+        {
+          "id": "A",
+          "texto": "Dreno deve ser colocado de rotina em todos os casos de apendicite.",
+          "correta": false,
+          "feedback": "Uso rotineiro de dreno não reduz abscessos e pode prolongar internação e causar desconfortos."
+        },
+        {
+          "id": "B",
+          "texto": "Evitar dreno de rotina e considerar apenas em situações selecionadas.",
+          "correta": true,
+          "feedback": "O uso de dreno é individualizado; o padrão não é colocar em todos os pacientes."
+        },
+        {
+          "id": "C",
+          "texto": "Dreno substitui a necessidade de antibioticoterapia em qualquer cenário.",
+          "correta": false,
+          "feedback": "Dreno não substitui antibiótico nem controle adequado de foco infeccioso."
+        },
+        {
+          "id": "D",
+          "texto": "Dreno é obrigatório sempre que a cirurgia é laparoscópica.",
+          "correta": false,
+          "feedback": "A técnica laparoscópica não implica obrigatoriedade de dreno de rotina."
+        }
+      ],
+      "explicacaoCorreta": "Decisões sobre dreno precisam levar em conta o tipo de apendicite e achados intraoperatórios; uso sistemático não traz benefícios claros.",
+      "proximaEtapaId": "info_pos_operatorio"
+    },
+    {
+      "id": "info_pos_operatorio",
+      "tipo": "info",
+      "titulo": "Pós-operatório imediato",
+      "texto": "O paciente é operado por via laparoscópica, sem complicações intraoperatórias. No pós-operatório imediato, você acompanha dor, náusea, aceitação da dieta e deambulação. O objetivo é que a dor possa ser controlada com analgésico por via oral, sem vômitos e com retorno gradual da alimentação.",
+      "proximaEtapaId": "pergunta_criterios_alta"
+    },
+    {
+      "id": "pergunta_criterios_alta",
+      "tipo": "pergunta",
+      "titulo": "Critérios de alta na não complicada",
+      "texto": "Quais critérios definem uma alta segura após apendicectomia laparoscópica em apendicite não complicada?",
+      "opcoes": [
+        {
+          "id": "A",
+          "texto": "Manter jejum por 48 horas, independentemente da evolução.",
+          "correta": false,
+          "feedback": "Jejum prolongado sem necessidade atrasa recuperação e não é recomendado de rotina."
+        },
+        {
+          "id": "B",
+          "texto": "Alta quando estiver afebril, com dor controlada com medicação por via oral, tolerando dieta, deambulando e sem vômitos repetidos.",
+          "correta": true,
+          "feedback": "Esses critérios refletem boa evolução clínica e segurança para retornar ao domicílio."
+        },
+        {
+          "id": "C",
+          "texto": "Só permitir alta após 7 dias de antibiótico intravenoso em todos os casos.",
+          "correta": false,
+          "feedback": "Não há indicação de terapia prolongada em casos não complicados com boa evolução."
+        },
+        {
+          "id": "D",
+          "texto": "Dar alta precoce sem nenhuma orientação de retorno.",
+          "correta": false,
+          "feedback": "Orientações de sinais de alerta e retorno são fundamentais para segurança do paciente."
+        }
+      ],
+      "explicacaoCorreta": "Alta segura combina boa evolução clínica, controle de sintomas, tolerância à alimentação e orientações claras em caso de piora.",
+      "proximaEtapaId": "pergunta_complicacao"
+    },
+    {
+      "id": "pergunta_complicacao",
+      "tipo": "pergunta",
+      "titulo": "Complicação a vigiar",
+      "texto": "Após apendicite, especialmente em casos mais graves, qual é uma das principais complicações intra-abdominais que você deve vigiar?",
+      "opcoes": [
+        {
+          "id": "A",
+          "texto": "Aparecimento súbito de hipotireoidismo.",
+          "correta": false,
+          "feedback": "Não é uma complicação típica relacionada diretamente à cirurgia de apendicite."
+        },
+        {
+          "id": "B",
+          "texto": "Abscesso intra-abdominal.",
+          "correta": true,
+          "feedback": "Abscessos podem surgir principalmente em contextos complicados ou com controle de foco mais difícil."
+        },
+        {
+          "id": "C",
+          "texto": "Desenvolvimento de varicela no pós-operatório imediato.",
+          "correta": false,
+          "feedback": "Não está diretamente relacionado ao procedimento ou à patologia abdominal."
+        },
+        {
+          "id": "D",
+          "texto": "Formação súbita de aneurisma de aorta.",
+          "correta": false,
+          "feedback": "Não é uma complicação esperada de apendicectomia."
+        }
+      ],
+      "explicacaoCorreta": "Complicações infecciosas intra-abdominais, como abscessos, precisam ser lembradas especialmente em casos de apendicite complicada.",
+      "proximaEtapaId": "pergunta_sinais_alerta"
+    },
+    {
+      "id": "pergunta_sinais_alerta",
+      "tipo": "pergunta",
+      "titulo": "Sinais de alerta para retorno",
+      "texto": "Você está fazendo orientações de alta. Qual conjunto de sinais deve motivar retorno imediato ao hospital?",
+      "opcoes": [
+        {
+          "id": "A",
+          "texto": "Dor leve em queda gradual, apetite melhorando e curativo seco.",
+          "correta": false,
+          "feedback": "Esse quadro é compatível com recuperação adequada."
+        },
+        {
+          "id": "B",
+          "texto": "Febre persistente, piora progressiva da dor abdominal e vômitos repetidos.",
+          "correta": true,
+          "feedback": "Esses achados sugerem possível complicação e justificam reavaliação urgente."
+        },
+        {
+          "id": "C",
+          "texto": "Discreto sono após analgesia, com sinais vitais estáveis.",
+          "correta": false,
+          "feedback": "Sonolência leve após medicação pode ser esperada, desde que sinais vitais estejam estáveis."
+        },
+        {
+          "id": "D",
+          "texto": "Curativo um pouco úmido, mas sem dor, febre ou piora clínica.",
+          "correta": false,
+          "feedback": "Deve ser orientado a observar, mas sem a mesma urgência dos sinais sistêmicos e dor intensa."
+        }
+      ],
+      "explicacaoCorreta": "Orientar sinais de alerta é parte fundamental da segurança pós-alta, permitindo que complicações sejam identificadas precocemente.",
+      "proximaEtapaId": "pergunta_erros_comuns"
+    },
+    {
+      "id": "pergunta_erros_comuns",
+      "tipo": "pergunta",
+      "titulo": "Erros frequentes no manejo da apendicite",
+      "texto": "Qual das condutas abaixo representa um erro frequente e potencialmente prejudicial no manejo de apendicite e suas complicações?",
+      "opcoes": [
+        {
+          "id": "A",
+          "texto": "Atrasar avaliação cirúrgica em paciente de alto risco, mesmo com forte suspeita de complicação.",
+          "correta": true,
+          "feedback": "Atrasar controle de foco em cenário de risco alto aumenta chance de perfuração, abscesso e piora sistêmica."
+        },
+        {
+          "id": "B",
+          "texto": "Evitar dreno de rotina, individualizando a decisão.",
+          "correta": false,
+          "feedback": "Individualizar uso de dreno está alinhado a práticas atuais e não é considerado erro por si só."
+        },
+        {
+          "id": "C",
+          "texto": "Solicitar imagem quando há dúvida diagnóstica ou necessidade de avaliar complicações.",
+          "correta": false,
+          "feedback": "Utilizar imagem de forma adequada ajuda a reduzir cirurgias desnecessárias e identifica diagnósticos alternativos."
+        },
+        {
+          "id": "D",
+          "texto": "Oferecer analgesia adequada e reavaliar de forma estruturada.",
+          "correta": false,
+          "feedback": "Controlar dor de maneira racional faz parte da boa prática e não atrapalha o diagnóstico."
+        }
+      ],
+      "explicacaoCorreta": "Erros como atraso em avaliação cirúrgica, uso indiscriminado de laxantes, antibiótico prolongado sem indicação ou manutenção de condutas antigas sem base em evidência podem piorar desfechos.",
+      "proximaEtapaId": "desfecho_final"
+    },
+    {
+      "id": "desfecho_final",
+      "tipo": "desfecho",
+      "titulo": "Encerramento do caso de apendicite",
+      "texto": "Você concluiu o caso de apendicite aguda não complicada, passando por decisão cirúrgica, uso racional de antibiótico, pós-operatório, alta e reconhecimento de complicações. Use esse caso como base para futuras variações: pediatria, gestante, abscesso, apendicolito ou diagnósticos alternativos.",
+      "permiteReiniciar": true
+    }
+  ]
+}
