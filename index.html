@@ -229,6 +229,24 @@
         </button>
         <p id="upload-estado" aria-live="polite"></p>
       </div>
+
+      <section class="firead-box" aria-label="Editor Firead">
+        <h3>Editor Firead</h3>
+        <p>Cole conteúdo aqui com preservação de estrutura (HTML-first).</p>
+
+        <div class="firead-toolbar">
+          <button id="btn-clear-styles" class="btn-secondary" type="button">Limpar estilos</button>
+        </div>
+
+        <div
+          id="firead-editor"
+          class="editor"
+          contenteditable="true"
+          role="textbox"
+          aria-multiline="true"
+          data-placeholder="Cole aqui conteúdo vindo de Gemini, ChatGPT ou outros sites"
+        ></div>
+      </section>
     </section>
   </main>
 
@@ -823,5 +841,6 @@
     // Chamar ao carregar a página para garantir estado inicial
     atualizarEstadoLigante();
   </script>
+  <script src="app.js"></script>
 </body>
 </html>
